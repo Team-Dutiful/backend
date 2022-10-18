@@ -1,1 +1,52 @@
-# bacend
+# backend
+
+## 서버 실행 방법
+
+### 1. MySQL에서 DB(schema) 생성
+
+- DB Name : Dutiful
+
+### 2. .env 파일 만들기
+
+- 프로젝트 폴더 최상위에 .env 파일 만들기
+
+```jsx
+// 2022/10/18일자 폴더 구조
+-config
+  L config.ts
+-migrations
+-models
+  L index.ts
+-seeders
+-src
+  L index.ts
+-gitignore
+-package.json
+-README.md
+-tsconfig.json
+-yarn.lock
+-.env // 같은 레벨에 .env 파일 생성
+```
+
+### 3. .env 파일 작성
+
+```elm
+DB_USERNAME=root
+DB_PASSWORD=123456789 (mysql에서 비밀번호 작성)
+DB_DBNAME=Dutiful(mysql에서 만든 db이름 작성)
+DB_HOST=127.0.0.1
+DB_PORT=8080(사용하고싶은포트번호작성)
+```
+
+### 4. 서버 실행
+
+```bash
+yarn dev
+```
+
+- 성공 문구
+
+```bash
+[server]: Server is running at [HOST 번호]:[PORT 번호]
+connection success [DB 이름]
+```
