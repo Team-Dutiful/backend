@@ -2,9 +2,9 @@
 
 ## 서버 실행 방법
 
-### 1. MySQL에서 DB(schema) 생성
+### 1. MySQL 설치
 
-- DB Name : Dutiful
+- username, password 기억할 것
 
 ### 2. .env 파일 만들기
 
