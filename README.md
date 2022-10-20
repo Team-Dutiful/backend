@@ -31,9 +31,9 @@
 ### 3. .env 파일 작성
 
 ```elm
-DB_USERNAME=root
-DB_PASSWORD=123456789 (mysql에서 비밀번호 작성)
-DB_DBNAME=Dutiful(mysql에서 만든 db이름 작성)
+DB_USERNAME=root (mysql username 작성)
+DB_PASSWORD=123456789 (mysql password 작성)
+DB_DBNAME=dutiful
 DB_HOST=127.0.0.1
 DB_PORT=8080(사용하고싶은포트번호작성)
 ```
