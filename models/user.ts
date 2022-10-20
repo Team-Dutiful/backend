@@ -2,7 +2,7 @@ import { DataTypes, Model } from "sequelize";
 import { sequelize } from "./index";
 
 interface UserAttributes {
-  id: number;
+  user_id: number;
   identification: string;
   password: string;
   name: string;
@@ -10,7 +10,7 @@ interface UserAttributes {
 }
 
 export class User extends Model<UserAttributes> {
-  public id!: number;
+  public user_id!: number;
   public identification: string;
   public password!: string;
   public name!: string;
@@ -22,7 +22,7 @@ export class User extends Model<UserAttributes> {
 
 User.init(
   {
-    id: {
+    user_id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       allowNull: false,
