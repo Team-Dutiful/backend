@@ -1,9 +1,9 @@
-import { Users } from "../../models/users";
+import { User } from "../../models/user";
 
 console.log("===============Create User Table===============");
 
 const create_table_users = async () => {
-  await Users.sync({ force: true })
+  await User.sync({ force: true })
     .then(() => {
       console.log("✅Success Create User Table");
     })

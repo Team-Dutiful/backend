@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
-import { exec, execFile } from "child_process";
+import { exec } from "child_process";
 import * as util from "util";
 
 console.log("migration-all-table");
