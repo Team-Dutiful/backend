@@ -19,8 +19,8 @@
     "start": "node dist/index.js",
     "build": "tsc -p .",
     "dev": "nodemon --watch \"src/**/*.ts\" --exec \"ts-node\" src/index.ts",
-    "create_db": "ts-node ./migrations/create-db.ts",
-    "migration_all": "ts-node ./migrations/migration-all-table.ts",
+    "create_db": "ts-node src/db/migrations/create-db.ts",
+    "migration_all": "ts-node src/db/migrations/migration-all-table.ts",
     "db": "yarn create_db && yarn migration_all"
   },
   "dependencies": {

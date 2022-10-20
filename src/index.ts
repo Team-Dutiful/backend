@@ -1,7 +1,7 @@
 import express, { Express, Request, Response, NextFunction } from "express";
 import * as dotenv from "dotenv";
 import cors from "cors";
-import { sequelize } from "../models";
+import { sequelize } from "./db/models";
 
 dotenv.config();
 
