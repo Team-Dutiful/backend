@@ -38,7 +38,13 @@ DB_HOST=127.0.0.1
 DB_PORT=8080(사용하고싶은포트번호작성)
 ```
 
-### 4. 서버 실행
+### 4. db & table 생성
+
+```bash
+yarn db
+```
+
+### 5. 서버 실행
 
 ```bash
 yarn dev
