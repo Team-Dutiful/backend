@@ -13,18 +13,20 @@
     "express": "^4.18.2",
     "nodemon": "^2.0.20",
     "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.1.0",
     "typescript": "^4.8.4"
   },
   "scripts": {
     "start": "node dist/index.js",
     "build": "tsc -p .",
-    "dev": "nodemon --watch \"src/**/*.ts\" --exec \"ts-node\" src/index.ts",
+    "dev": "nodemon --watch \"src/**/*.ts\" --exec \"ts-node -r tsconfig-paths/register\" src/index.ts",
     "create_db": "ts-node src/db/migrations/create-db.ts",
     "migration_all": "ts-node src/db/migrations/migration-all-table.ts",
     "connect": "ts-node src/db/migrations/connect-relationships.ts",
     "db": "yarn create_db && yarn migration_all"
   },
   "dependencies": {
+    "eslint-import-resolver-alias": "^1.1.2",
     "mysql2": "^2.3.3",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^6.25.2",

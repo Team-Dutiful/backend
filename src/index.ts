@@ -1,8 +1,8 @@
 import express, { Express, Request, Response, NextFunction } from "express";
 import * as dotenv from "dotenv";
 import cors from "cors";
-import { sequelize } from "./db/models";
-import router from './routes/index';
+import { sequelize } from "@db/models";
+import router from "@routes/index";
 
 dotenv.config();
 
@@ -18,7 +18,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   console.log(`Request Occur! ${req.method}, ${req.url}`);
   next();
 });
-app.use('/', router)
+app.use("/", router);
 
 app.listen(PORT, HOST, async () => {
   console.log(`[server]: Server is running at ${HOST}:${PORT}`);
@@ -33,4 +33,4 @@ app.listen(PORT, HOST, async () => {
     });
 });
 
-export {}
+export {};

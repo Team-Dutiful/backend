@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import GroupService from "../services/groupsService";
+import GroupService from "@services/groupsService";
 const service = new GroupService();
 
 const createGroup = async (req: Request, res: Response) => {

@@ -2,7 +2,10 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@controller/*": ["src/controller/*"],
+      "@db/*": ["src/db/*"],
+      "@routes/*": ["src/routes/*"],
+      "@services/*": ["src/services/*"]
     },
     "lib": ["es5", "es6"],
     "target": "es6",
