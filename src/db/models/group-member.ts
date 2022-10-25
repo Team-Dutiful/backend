@@ -16,6 +16,7 @@ GroupMember.init(
     group_member_id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
+      autoIncrement: true,
       allowNull: false,
     },
   },
