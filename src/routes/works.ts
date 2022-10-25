@@ -1,9 +1,9 @@
 import express, { Express, Router } from "express";
 const router: Router = express.Router();
 
-const controller = require('../controller/worksController')
+import controller from "../controller/worksController";
 
-router.post('/', controller.createWork);
-router.get('/', controller.getWorks);
+router.post("/", controller.createWork);
+router.get("/", controller.getWorks);
 
 export default router;
