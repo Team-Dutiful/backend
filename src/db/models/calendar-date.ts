@@ -1,5 +1,6 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "./index";
+import { User } from "./user";
 
 interface CalendarAttributes {
   calendar_date_id: number;
@@ -44,3 +45,5 @@ CalendarDate.init(
     updatedAt: "updateTimestamp",
   }
 );
+
+User.hasMany(CalendarDate, { sourceKey: "user_id", foreignKey: "user_id" });
