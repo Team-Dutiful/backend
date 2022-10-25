@@ -4,14 +4,20 @@
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
+    "@babel/core": "^7.19.6",
+    "@babel/preset-env": "^7.19.4",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.14",
+    "@types/jest": "^29.2.0",
     "@types/node": "^18.8.5",
     "@types/validator": "^13.7.8",
+    "babel-jest": "^29.2.2",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "jest": "^29.2.2",
     "nodemon": "^2.0.20",
+    "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.1.0",
     "typescript": "^4.8.4"
@@ -23,7 +29,8 @@
     "create_db": "ts-node src/db/migrations/create-db.ts",
     "migration_all": "ts-node src/db/migrations/migration-all-table.ts",
     "connect": "ts-node src/db/migrations/connect-relationships.ts",
-    "db": "yarn create_db && yarn migration_all"
+    "db": "yarn create_db && yarn migration_all",
+    "test" : "jest"
   },
   "dependencies": {
     "eslint-import-resolver-alias": "^1.1.2",
