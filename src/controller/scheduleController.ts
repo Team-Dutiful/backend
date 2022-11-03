@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import ScheduleService from "../services/scheduleService";
+import ScheduleService from "@services/scheduleService";
 const service = new ScheduleService();
 
 const createSchedule = async (req: Request, res: Response) => {

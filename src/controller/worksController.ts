@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import WorksService from "../services/worksService";
+import WorksService from "@services/worksService";
 const service = new WorksService();
 
 const createWork = async (req: Request, res: Response) => {
