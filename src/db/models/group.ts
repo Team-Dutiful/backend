@@ -6,7 +6,6 @@ interface GroupAttributes {
   group_id: number;
   name: string;
   color: string;
-  leader_id : number;
 }
 
 export class Group extends Model<GroupAttributes> {
@@ -31,10 +30,6 @@ Group.init(
       type: DataTypes.STRING(45),
       allowNull: false,
     },
-    leader_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
   },
   {
     modelName: "Group",
@@ -44,4 +39,5 @@ Group.init(
   }
 );
 
-Group.belongsTo(User, { foreignKey: "leader_id" });
+User.hasOne(Group, { sourceKey: "user_id", foreignKey: "leader_id" });
+Group.belongsTo(User, { targetKey: "user_id", foreignKey: "leader_id" });

@@ -1,13 +1,13 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "./index";
 import { User } from "./user";
+import { Work } from "./work";
 
 interface CalendarAttributes {
   calendar_date_id: number;
   year: number;
   month: number;
   day: number;
-  user_id : number;
 }
 
 export class CalendarDate extends Model<CalendarAttributes> {
@@ -37,10 +37,6 @@ CalendarDate.init(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    user_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
   },
   {
     modelName: "CalendarDate",
@@ -52,4 +48,10 @@ CalendarDate.init(
   }
 );
 
+// User:CalendarDate = 1:N관계
 User.hasMany(CalendarDate, { sourceKey: "user_id", foreignKey: "user_id" });
+CalendarDate.belongsTo(User, { targetKey: "user_id", foreignKey: "user_id" });
+
+// Work:CalenDardate = 1:1관계
+Work.hasOne(CalendarDate, { sourceKey: "work_id", foreignKey: "work_id" });
+CalendarDate.belongsTo(Work, { targetKey: "work_id", foreignKey: "work_id" });
