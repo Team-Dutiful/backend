@@ -7,6 +7,7 @@ interface CalendarAttributes {
   year: number;
   month: number;
   day: number;
+  user_id : number;
 }
 
 export class CalendarDate extends Model<CalendarAttributes> {
@@ -33,6 +34,10 @@ CalendarDate.init(
       allowNull: false,
     },
     day: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },

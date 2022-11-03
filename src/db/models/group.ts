@@ -6,6 +6,7 @@ interface GroupAttributes {
   group_id: number;
   name: string;
   color: string;
+  leader_id : number;
 }
 
 export class Group extends Model<GroupAttributes> {
@@ -28,6 +29,10 @@ Group.init(
     },
     color: {
       type: DataTypes.STRING(45),
+      allowNull: false,
+    },
+    leader_id: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
   },

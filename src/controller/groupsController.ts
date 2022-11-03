@@ -4,8 +4,8 @@ const service = new GroupService();
 
 const createGroup = async (req: Request, res: Response) => {
   try {
-    await service.createGroup();
-    return res.status(200).json({ status: 200 });
+    const groupId = await service.createGroup(req.body.name, req.body.color);
+    return res.status(200).json({ status: 200, id: groupId });
   } catch (e) {
     return res.status(400).json({ status: 400, message: e.message });
   }

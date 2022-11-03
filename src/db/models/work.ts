@@ -11,6 +11,8 @@ interface WorkAttributes {
   end_time: Date;
   work_type: string;
   memo: string;
+  user_id : number;
+  calendar_date_id : number;
 }
 
 export class Work extends Model<WorkAttributes> {
@@ -54,6 +56,14 @@ Work.init(
     memo: {
       type: DataTypes.STRING(45),
       allowNull: true,
+    },
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    calendar_date_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
     },
   },
   {

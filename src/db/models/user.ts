@@ -1,5 +1,6 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "./index";
+import { Group } from "./group";
 
 interface UserAttributes {
   user_id: number;
@@ -54,3 +55,4 @@ User.init(
     updatedAt: "updateTimestamp",
   }
 );
+
