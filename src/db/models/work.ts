@@ -4,6 +4,7 @@ import { User } from "./user";
 
 interface WorkAttributes {
   work_id: number;
+  user_id: number;
   name: string;
   color: string;
   start_time: Date;
@@ -14,6 +15,7 @@ interface WorkAttributes {
 
 export class Work extends Model<WorkAttributes> {
   public work_id: number;
+  public user_id: number;
   public name: string;
   public color: string;
   public start_time: Date;
@@ -28,6 +30,10 @@ Work.init(
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
+      allowNull: false,
+    },
+    user_id: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     name: {

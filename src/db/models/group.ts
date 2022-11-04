@@ -4,12 +4,14 @@ import { User } from "./user";
 
 interface GroupAttributes {
   group_id: number;
+  leader_id: number;
   name: string;
   color: string;
 }
 
 export class Group extends Model<GroupAttributes> {
   public group_id: number;
+  public leader_id: number;
   public name: string;
   public color: string;
 }
@@ -20,6 +22,10 @@ Group.init(
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
+      allowNull: false,
+    },
+    leader_id: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     name: {

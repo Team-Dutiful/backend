@@ -5,6 +5,8 @@ import { Work } from "./work";
 
 interface CalendarAttributes {
   calendar_date_id: number;
+  user_id: number;
+  work_id: number;
   year: number;
   month: number;
   day: number;
@@ -12,6 +14,8 @@ interface CalendarAttributes {
 
 export class CalendarDate extends Model<CalendarAttributes> {
   public calendar_date_id!: number;
+  public user_id: number;
+  public work_id: number;
   public year!: number;
   public month!: number;
   public day!: number;
@@ -23,6 +27,14 @@ CalendarDate.init(
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
+      allowNull: false,
+    },
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    work_id: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     year: {
