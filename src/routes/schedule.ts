@@ -3,7 +3,7 @@ const router: Router = express.Router();
 
 import controller from "@controller/scheduleController";
 
-router.post("/", controller.createSchedule);
+router.post("/", controller.manageSchedule);
 router.get("/", controller.getSchedule);
 
 export default router;
