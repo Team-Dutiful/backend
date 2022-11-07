@@ -5,12 +5,14 @@ import { User } from "./user";
 
 interface GroupMemberAttributes {
   group_member_id: number;
-  group_id : number;
-  user_id : number;
+  user_id: number;
+  group_id: number;
 }
 
 export class GroupMember extends Model<GroupMemberAttributes> {
   public group_member_id: number;
+  public user_id: number;
+  public group_id: number;
 }
 
 GroupMember.init(
@@ -21,11 +23,11 @@ GroupMember.init(
       autoIncrement: true,
       allowNull: false,
     },
-    group_id: {
+    user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    user_id: {
+    group_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
@@ -38,5 +40,8 @@ GroupMember.init(
   }
 );
 
-GroupMember.belongsTo(User, { foreignKey: "user_id" });
-GroupMember.belongsTo(Group, { foreignKey: "group_id" });
+User.hasMany(GroupMember, { sourceKey: "user_id", foreignKey: "user_id" });
+GroupMember.belongsTo(User, { targetKey: "user_id", foreignKey: "user_id" });
+
+Group.hasMany(GroupMember, { sourceKey: "group_id", foreignKey: "group_id" });
+GroupMember.belongsTo(Group, { targetKey: "group_id", foreignKey: "group_id" });

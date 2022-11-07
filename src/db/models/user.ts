@@ -55,4 +55,3 @@ User.init(
     updatedAt: "updateTimestamp",
   }
 );
-

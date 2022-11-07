@@ -1,22 +1,21 @@
 import { DataTypes, Model } from "sequelize";
-import { CalendarDate } from "./calendar-date";
 import { sequelize } from "./index";
 import { User } from "./user";
 
 interface WorkAttributes {
   work_id: number;
+  user_id: number;
   name: string;
   color: string;
   start_time: Date;
   end_time: Date;
   work_type: string;
   memo: string;
-  user_id : number;
-  calendar_date_id : number;
 }
 
 export class Work extends Model<WorkAttributes> {
   public work_id: number;
+  public user_id: number;
   public name: string;
   public color: string;
   public start_time: Date;
@@ -31,6 +30,10 @@ Work.init(
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
+      allowNull: false,
+    },
+    user_id: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     name: {
@@ -57,14 +60,6 @@ Work.init(
       type: DataTypes.STRING(45),
       allowNull: true,
     },
-    user_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    calendar_date_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
   },
   {
     modelName: "Work",
@@ -76,8 +71,12 @@ Work.init(
   }
 );
 
+// 1의 입장에서 hasMany 사용
+// sourceKey : user의 primary key
+// foreignKey : work의 foreign key
 User.hasMany(Work, { sourceKey: "user_id", foreignKey: "user_id" });
-CalendarDate.hasMany(Work, {
-  sourceKey: "calendar_date_id",
-  foreignKey: "calendar_date_id",
-});
+
+// N의 입장에서 belongsTo 사용
+// targetKey : user의 primary key
+// foreignKey : work에서 생성될 foreign key
+Work.belongsTo(User, { targetKey: "user_id", foreignKey: "user_id" });
