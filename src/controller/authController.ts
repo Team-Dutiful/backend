@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import AuthService from "../services/authService";
+import AuthService from "@services/authService";
+
 const service = new AuthService();
 
 const login = async (req: Request, res: Response) => {
