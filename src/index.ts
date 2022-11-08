@@ -1,14 +1,13 @@
 import express, { Express, Request, Response, NextFunction } from "express";
-import * as dotenv from "dotenv";
+
 import cors from "cors";
 import { sequelize } from "@db/models";
 import router from "@routes/index";
+import { config } from "config";
 
-dotenv.config();
-
-const PORT: number = parseInt(process.env.DB_PORT as string, 10) || 5000;
-const HOST: string = process.env.DB_HOST || "localhost";
-const DATEBASE: string = process.env.DB_DBNAME;
+const PORT: number = parseInt(config.db.port as string, 10) || 5000;
+const HOST: string = config.db.host || "localhost";
+const DATEBASE: string = config.db.name;
 
 const app: Express = express();
 
