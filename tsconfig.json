@@ -18,5 +18,6 @@
     "sourceMap": true,
     "noImplicitAny": false,
     "esModuleInterop": true
-  }
+  },
+  "typeRoots": ["@types", "./node_modules/@types"]
 }
