@@ -1,6 +1,5 @@
 import { Work } from "@db/models/work";
 import { User } from "@db/models/user";
-import { CalendarDate } from "@db/models/calendar-date";
 
 class WorksService {
   getWork = async (work_id: number) => {
@@ -45,6 +44,29 @@ class WorksService {
           ],
         }
       );
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  updateWork = async (
+    work_id: number,
+    name: string,
+    color: string,
+    start_time: Date,
+    end_time: Date,
+    work_type: string,
+    memo: string
+  ) => {
+    try {
+      const work = await Work.findOne({ where: { work_id: work_id } });
+      work.name = name;
+      work.color = color;
+      work.start_time = start_time;
+      work.end_time = end_time;
+      work.work_type = work_type;
+      work.memo = memo;
+      work.save();
     } catch (error) {
       throw error;
     }
