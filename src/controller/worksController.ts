@@ -56,4 +56,13 @@ const deleteWorks = async (req: Request, res: Response) => {
   }
 };
 
-export default { createWork, getWorks, updateWorks, deleteWorks };
+const getWorksList = async (req: Request, res: Response) => {
+  try {
+    await service.getWorkList();
+    return res.status(200).json({ status: 200 });
+  } catch (e) {
+    return res.status(400).json({ status: 400, message: e.message });
+  }
+};
+
+export default { createWork, getWorks, getWorksList, updateWorks, deleteWorks };
