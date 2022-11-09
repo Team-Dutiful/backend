@@ -79,8 +79,18 @@ class ScheduleService {
     }
   };
 
-  getSchedule = async () => {
-    console.log("test");
+  getSchedule = async (year: number, month: number) => {
+    try {
+      const monthSchedule = await CalendarDate.findAll({
+        where: {
+          year: year,
+          month: month,
+        },
+      });
+      return monthSchedule;
+    } catch (error) {
+      throw error;
+    }
   };
 }
 
