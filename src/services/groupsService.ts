@@ -1,6 +1,7 @@
 import { CalendarDate } from '@db/models/calendar-date';
 import { Work } from '@db/models/work';
 import { Builder } from 'builder-pattern';
+import { group } from 'console';
 import { Group } from '../db/models/group';
 import { GroupMember } from '../db/models/group-member';
 import { User } from '../db/models/user';
@@ -110,9 +111,7 @@ class GroupService {
     // 그룹 수정
     updateGroup = async (id : string, name: string, color: string) => {
         try {
-            const group = await Group.findOne(
-                { where: { group_id : id } }
-            )
+            const group = await Group.findOne({ where: { group_id : id } })
             group.name = name;
             group.color = color;
             group.save();
@@ -125,9 +124,8 @@ class GroupService {
     deleteGroup = async (groupId : string) => {
         try {
             const groupMembers = await GroupMember.findAll({where : {group_id:groupId}})
-            for (const groupMember of groupMembers) {
-                groupMember.destroy();
-            }
+            groupMembers.forEach(groupMember => groupMember.destroy)
+
             await Group.destroy(
                 { where: { group_id : groupId } }
             )
@@ -142,10 +140,9 @@ class GroupService {
             // todo[dain] 리더인지 확인 필요
             await GroupMember.destroy({where : {user_id : userId, group_id : groupId}})
         } catch (error) {
-            throw error;
+            throw error; 
         }
     };  
-
 
     // 그룹 탈퇴
     exitGroup = async (groupId : string, userId : number) => {
@@ -159,8 +156,11 @@ class GroupService {
     // 리더 변경
     changeLeader = async (groupId : string, userId : number) => {
         try {
+            // 리더 확인 로직 필요
+            const user = await User.findOne({ where : {user_id : userId}});
+
             const group = await Group.findOne({ where : {group_id : groupId}});
-            group.leader_id = userId;
+            group.leader_id = user.user_id;
             group.save();
         } catch (error) {
             throw error;
@@ -196,7 +196,7 @@ class GroupService {
                 const dates = await CalendarDate.findAll({ where : { user_id : groupMember.user_id}});
                 const calendarDates: ICalendarDate[] = [];
                 for (const date of dates) {
-                    const dateWork = await Work.findOne({ where : { work_id : date.user_id }})
+                    const dateWork = await Work.findOne({ where : { work_id : date.work_id }})
                     const work = Builder<IWork>()
                                     .work_id(dateWork.work_id)
                                     .name(dateWork.name)
