@@ -20,7 +20,8 @@ const createWork = async (req: Request, res: Response) => {
 
 const getWorks = async (req: Request, res: Response) => {
   try {
-    await service.getWork();
+    const work_id = Number(req.params.workId);
+    await service.getWork(work_id);
     return res.status(200).json({ status: 200 });
   } catch (e) {
     return res.status(400).json({ status: 400, message: e.message });

@@ -3,8 +3,13 @@ import { User } from "@db/models/user";
 import { CalendarDate } from "@db/models/calendar-date";
 
 class WorksService {
-  getWork = async () => {
-    console.log("test");
+  getWork = async (work_id: number) => {
+    try {
+      const newWork = Work.findOne({ where: { work_id: work_id } });
+      return newWork;
+    } catch (error) {
+      throw error;
+    }
   };
 
   createWork = async (

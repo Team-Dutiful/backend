@@ -4,6 +4,6 @@ const router: Router = express.Router();
 import controller from "@controller/worksController";
 
 router.post("/", controller.createWork);
-router.get("/", controller.getWorks);
+router.get("/:workId", controller.getWorks);
 
 export default router;
