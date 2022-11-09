@@ -46,4 +46,14 @@ const updateWorks = async (req: Request, res: Response) => {
   }
 };
 
-export default { createWork, getWorks, updateWorks };
+const deleteWorks = async (req: Request, res: Response) => {
+  try {
+    const work_id = Number(req.params.workId);
+    await service.deleteWork(work_id);
+    return res.status(200).json({ status: 200 });
+  } catch (e) {
+    return res.status(400).json({ status: 400, message: e.message });
+  }
+};
+
+export default { createWork, getWorks, updateWorks, deleteWorks };

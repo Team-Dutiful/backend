@@ -4,8 +4,8 @@ import { User } from "@db/models/user";
 class WorksService {
   getWork = async (work_id: number) => {
     try {
-      const newWork = Work.findOne({ where: { work_id: work_id } });
-      return newWork;
+      const work = Work.findOne({ where: { work_id: work_id } });
+      return work;
     } catch (error) {
       throw error;
     }
@@ -67,6 +67,15 @@ class WorksService {
       work.work_type = work_type;
       work.memo = memo;
       work.save();
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  deleteWork = async (work_id: number) => {
+    try {
+      const work = await Work.findOne({ where: { work_id: work_id } });
+      work.destroy();
     } catch (error) {
       throw error;
     }
