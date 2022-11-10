@@ -1,6 +1,6 @@
-import { CalendarDate } from "../db/models/calendar-date";
-import { Work } from "../db/models/work";
-import { User } from "../db/models/user";
+import { CalendarDate } from "@db/models/calendar-date";
+import { Work } from "@db/models/work";
+import { User } from "@db/models/user";
 
 interface CalendarWorkProps {
   calendar_date_id?: number;
@@ -11,90 +11,76 @@ interface CalendarWorkProps {
   type: string;
 }
 
-class ScheduleService {
-  manageSchedule = async (calendarWork: CalendarWorkProps[]) => {
-    try {
-      for (let i = 0; i < calendarWork.length; i++) {
-        switch (calendarWork[i].type) {
-          case "add":
-            const exUser = await User.create({
-              identification: "hello",
-              password: "1234",
-              name: "hi",
-              email: "tmax.com",
-            });
+export async function manageSchedule(calendarWork: CalendarWorkProps[]) {
+  try {
+    for (let i = 0; i < calendarWork.length; i++) {
+      switch (calendarWork[i].type) {
+        case "add":
+          const exUser = await User.create({
+            identification: "hello",
+            password: "1234",
+            name: "hi",
+            email: "tmax.com",
+          });
 
-            const exWork = await Work.create({
+          await CalendarDate.create(
+            {
+              year: calendarWork[i].year,
+              month: calendarWork[i].month,
+              day: calendarWork[i].day,
               user_id: exUser.user_id,
-              name: "용우",
-              color: "#fff",
-              start_time: new Date(),
-              end_time: new Date(),
-              work_type: "야근",
-              memo: "퇴근하고싶어요",
-            });
+              work_id: calendarWork[i].work_id,
+            },
+            {
+              include: [
+                {
+                  model: User,
+                },
+                {
+                  model: Work,
+                },
+              ],
+            }
+          );
+          break;
 
-            await CalendarDate.create(
-              {
-                year: calendarWork[i].year,
-                month: calendarWork[i].month,
-                day: calendarWork[i].day,
-                user_id: exUser.user_id,
-                work_id: calendarWork[i].work_id,
-              },
-              {
-                include: [
-                  {
-                    model: User,
-                  },
-                  {
-                    model: Work,
-                  },
-                ],
-              }
-            );
-            break;
+        case "update":
+          const updateCalendar = await CalendarDate.findOne({
+            where: {
+              calendar_date_id: calendarWork[i].calendar_date_id,
+            },
+          });
 
-          case "update":
-            const updateCalendar = await CalendarDate.findOne({
-              where: {
-                calendar_date_id: calendarWork[i].calendar_date_id,
-              },
-            });
+          updateCalendar.work_id = calendarWork[i].work_id;
+          updateCalendar.save();
+          break;
 
-            updateCalendar.work_id = calendarWork[i].work_id;
-            updateCalendar.save();
-            break;
+        case "delete":
+          const deleteCalendar = await CalendarDate.findOne({
+            where: {
+              calendar_date_id: calendarWork[i].calendar_date_id,
+            },
+          });
 
-          case "delete":
-            const deleteCalendar = await CalendarDate.findOne({
-              where: {
-                calendar_date_id: calendarWork[i].calendar_date_id,
-              },
-            });
-
-            deleteCalendar.destroy();
-            break;
-        }
+          deleteCalendar.destroy();
+          break;
       }
-    } catch (error) {
-      throw error;
     }
-  };
-
-  getSchedule = async (year: number, month: number) => {
-    try {
-      const monthSchedule = await CalendarDate.findAll({
-        where: {
-          year: year,
-          month: month,
-        },
-      });
-      return monthSchedule;
-    } catch (error) {
-      throw error;
-    }
-  };
+  } catch (error) {
+    throw error;
+  }
 }
 
-export default ScheduleService;
+export async function getSchedule(year: number, month: number) {
+  try {
+    const monthSchedule = await CalendarDate.findAll({
+      where: {
+        year: year,
+        month: month,
+      },
+    });
+    return monthSchedule;
+  } catch (error) {
+    throw error;
+  }
+}
