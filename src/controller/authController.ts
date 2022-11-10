@@ -50,17 +50,28 @@ const login = async (req: Request, res: Response) => {
       return res.status(401).json({ message: "Invalid user or password" });
     }
     const token = createJwtToken(user);
+    res.cookie("accessToken", token, {
+      maxAge: config.jwt.expiresInSec,
+      httpOnly: true,
+    });
     return res.status(200).json({
       status: " 200",
       message: "OK",
       body: {
-        token,
         identification,
       },
     });
   } catch (e) {
     return res.status(400).json({ status: 400, message: e.message });
   }
+};
+
+const logout = (req: Request, res: Response) => {
+  return res.clearCookie("accessToken").status(200).json({
+    status: "204",
+    message: "OK",
+    body: {},
+  });
 };
 
 const findid = async (req: Request, res: Response) => {
@@ -119,4 +130,4 @@ function createJwtToken(user: UserAttributes) {
   );
 }
 
-export default { login, signup, findid, changepwd, me };
+export default { login, logout, signup, findid, changepwd, me };

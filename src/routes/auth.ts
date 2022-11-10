@@ -34,6 +34,8 @@ router.post(
 );
 router.post("/login", validateLogin, controller.login);
 
+router.post("logout", controller.logout);
+
 router.post("/find-id", validateFindID, controller.findid);
 
 router.post(
