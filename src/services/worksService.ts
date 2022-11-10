@@ -11,6 +11,12 @@ class WorksService {
     memo: string
   ) => {
     try {
+      const newUser = await User.create({
+        identification: "hello",
+        password: "1234",
+        name: "hi",
+        email: "tmax.com",
+      });
       const newWork = await Work.create(
         {
           name: "name",
@@ -19,7 +25,7 @@ class WorksService {
           end_time: new Date(),
           work_type: "DAY",
           memo: "memo",
-          user_id: 3, // temp user_id
+          user_id: newUser.user_id,
         },
         {
           include: [
@@ -60,14 +66,12 @@ class WorksService {
   ) => {
     try {
       const work = await Work.findOne({ where: { work_id: work_id } });
-
       work.name = name;
       work.color = color;
       work.start_time = start_time;
       work.end_time = end_time;
       work.work_type = work_type;
       work.memo = memo;
-
       work.save();
     } catch (error) {
       throw error;
