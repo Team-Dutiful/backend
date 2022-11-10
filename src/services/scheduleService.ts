@@ -11,24 +11,17 @@ interface CalendarWorkProps {
   type: string;
 }
 
-export async function manageSchedule(calendarWork: CalendarWorkProps[]) {
+export async function manageSchedule(calendarWork: CalendarWorkProps[], user_id: number) {
   try {
     for (let i = 0; i < calendarWork.length; i++) {
       switch (calendarWork[i].type) {
         case "add":
-          const exUser = await User.create({
-            identification: "hello",
-            password: "1234",
-            name: "hi",
-            email: "tmax.com",
-          });
-
           await CalendarDate.create(
             {
               year: calendarWork[i].year,
               month: calendarWork[i].month,
               day: calendarWork[i].day,
-              user_id: exUser.user_id,
+              user_id: user_id,
               work_id: calendarWork[i].work_id,
             },
             {

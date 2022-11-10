@@ -3,7 +3,7 @@ import * as ScheduleService from "@services/scheduleService";
 
 const manageSchedule = async (req: Request, res: Response) => {
   try {
-    await ScheduleService.manageSchedule(req.body.calendarWork);
+    await ScheduleService.manageSchedule(req.body.calendarWork, req.user_id);
     return res.status(200).json({ status: 200 });
   } catch (e) {
     return res.status(400).json({ status: 400, message: e.message });
