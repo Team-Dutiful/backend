@@ -16,15 +16,12 @@ export async function createUser(user: UserAttributes) {
   return User.create(user).then((data) => console.log(data.identification));
 }
 
-export async function changeUserPasswrod(
-  identification: string,
-  newPassword: string
-) {
+export async function changeUserPasswrod(user_id: number, newPassword: string) {
   return User.update(
     { password: newPassword },
     {
       where: {
-        identification,
+        user_id,
       },
     }
   );

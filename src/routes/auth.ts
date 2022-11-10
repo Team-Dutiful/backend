@@ -51,6 +51,4 @@ router.post(
   controller.changepwd
 );
 
-router.get("/me", isAuth, controller.me);
-
 export default router;

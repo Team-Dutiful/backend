@@ -97,7 +97,7 @@ const changepwd = async (req: Request, res: Response) => {
   // saltRounds를 이용하여 암호화를 더 복잡하게 한다.
   const hashed = await bcrypt.hash(password, config.bcrypt.saltRounds);
   try {
-    await authService.changeUserPasswrod(req.identification, hashed);
+    await authService.changeUserPasswrod(req.user_id, hashed);
     return res.status(200).json({
       status: "200",
       message: "OK",
@@ -106,18 +106,6 @@ const changepwd = async (req: Request, res: Response) => {
   } catch (e) {
     return res.status(400).json({ status: 400, message: e.message });
   }
-};
-
-// isAuth를 사용했을 때 req 사용 예시
-const me = async (req: Request, res: Response) => {
-  // req에 저장되어있는 identification을 이용하여 유저정보 찾기
-  const user = await authService.findByUserIdentification(req.identification);
-  if (!user) {
-    return res.status(404).json({ message: "User not found" });
-  }
-  return res
-    .status(200)
-    .json({ token: req.token, identification: user.identification });
 };
 
 function createJwtToken(user: UserAttributes) {
@@ -130,4 +118,4 @@ function createJwtToken(user: UserAttributes) {
   );
 }
 
-export default { login, logout, signup, findid, changepwd, me };
+export default { login, logout, signup, findid, changepwd };
