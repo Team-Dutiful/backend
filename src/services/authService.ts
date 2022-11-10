@@ -18,6 +18,24 @@ class AuthService {
   logout = async () => {
     console.log("test");
   };
+
+  signup = async (
+    identification: string,
+    password: string,
+    name: string,
+    email: string
+  ) => {
+    try {
+      await User.create({
+        identification,
+        password,
+        name,
+        email,
+      });
+    } catch (error) {
+      throw error;
+    }
+  };
 }
 
 export default AuthService;

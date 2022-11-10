@@ -47,3 +47,4 @@ Group.init(
 
 User.hasOne(Group, { sourceKey: "user_id", foreignKey: "leader_id" });
 Group.belongsTo(User, { targetKey: "user_id", foreignKey: "leader_id" });
+

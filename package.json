@@ -33,7 +33,10 @@
     "test": "jest"
   },
   "dependencies": {
+<<<<<<< HEAD
     "builder-pattern": "^2.1.0",
+=======
+>>>>>>> fa78839b7885ced006b35546270b2c1841577d17
     "eslint-import-resolver-alias": "^1.1.2",
     "mysql2": "^2.3.3",
     "reflect-metadata": "^0.1.13",
