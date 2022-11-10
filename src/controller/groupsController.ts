@@ -3,7 +3,7 @@ import * as groupService from "@services/groupsService";
 
 const createGroup = async (req: Request, res: Response) => {
   try {
-    const groupId = await groupService.createGroup(req.body.name, req.body.color);
+    const groupId = await groupService.createGroup(req.user_id, req.body.name, req.body.color);
     return res.status(200).json({ status: 200, id: groupId });
   } catch (e) {
     return res.status(400).json({ status: 400, message: e.message });
@@ -12,7 +12,7 @@ const createGroup = async (req: Request, res: Response) => {
 
 const getGroup = async (req: Request, res: Response) => {
   try {
-    const groups = await groupService.getGroup();
+    const groups = await groupService.getGroup(req.user_id);
     return res.status(200).json({ status: 200, data : groups });
   } catch (e) {
     return res.status(400).json({ status: 400, message: e.message });
@@ -21,7 +21,7 @@ const getGroup = async (req: Request, res: Response) => {
 
 const updateGroup = async (req: Request, res: Response) => {
   try {
-    const groupId = await groupService.updateGroup(+req.params.groupId, req.body.name, req.body.color);
+    const groupId = await groupService.updateGroup(req.user_id, +req.params.groupId, req.body.name, req.body.color);
     return res.status(200).json({ status: 200, id: groupId });
   } catch (e) {
     return res.status(400).json({ status: 400, message: e.message });
@@ -30,7 +30,7 @@ const updateGroup = async (req: Request, res: Response) => {
 
 const deleteGroup = async (req: Request, res: Response) => {
   try {
-    const groupId = await groupService.deleteGroup(+req.params.groupId);
+    const groupId = await groupService.deleteGroup(req.user_id, +req.params.groupId);
     return res.status(200).json({ status: 200, id: groupId });
   } catch (e) {
     return res.status(400).json({ status: 400, message: e.message });

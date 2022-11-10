@@ -1,8 +1,5 @@
 import { CalendarDate } from '@db/models/calendar-date';
 import { Work } from '@db/models/work';
-import { Builder } from 'builder-pattern';
-import { group } from 'console';
-import { Socket } from 'dgram';
 import { Group } from '../db/models/group';
 import { GroupMember } from '../db/models/group-member';
 import { User } from '../db/models/user';
@@ -45,21 +42,12 @@ interface IGroupMember {
 }
 
 // 그룹 생성
-export async function createGroup(name: string, color: string) {
+export async function createGroup(userId : number, name: string, color: string) {
     try {
-        const newUser = await User.create(
-            {
-                identification : "123",
-                password : "123",
-                name : "123",
-                email : "1234"
-            }
-        )
-
         const newGroup = await Group.create({
             name: name,
             color: color,
-            leader_id : newUser.user_id // todo[dain] 유저 아이디 변경 필요
+            leader_id : userId
         }, {
             include: [{
                 model: User
@@ -78,12 +66,11 @@ export async function createGroup(name: string, color: string) {
   
   
     // 그룹 가져오기
-export async function getGroup() {
+export async function getGroup(userId : number) {
     try {
         const result: IGroup[] = [];
 
-        // todo[dain] user_id 변경 필요
-        const groups = await GroupMember.findAll({ where: { user_id : 1} })
+        const groups = await GroupMember.findAll({ where: { user_id : userId } })
 
         for (const group of groups) {
             const findGroup = await Group.findOne({ where : {group_id : group.group_id}})
@@ -116,9 +103,14 @@ export async function getGroup() {
 }
 
 // 그룹 수정
-export async function updateGroup(groupId : number, name: string, color: string) {
+export async function updateGroup(userId: number, groupId : number, name: string, color: string) {
     try {
         const group = await Group.findOne({ where: { group_id : groupId } })
+        
+        if (group.leader_id !== userId) {
+            throw new Error("그룹 권한이 없습니다.")
+        }
+
         group.name = name;
         group.color = color;
         group.save();
@@ -128,14 +120,18 @@ export async function updateGroup(groupId : number, name: string, color: string)
 };  
 
 // 그룹 삭제
-export async function deleteGroup(groupId : number){
+export async function deleteGroup(userId: number, groupId : number){
     try {
+        const group = await Group.findOne({ where : {group_id : groupId }})
+        
+        if (group.leader_id !== userId) {
+            throw new Error("그룹 권한이 없습니다.")
+        }
+        
         const groupMembers = await GroupMember.findAll({where : {group_id:groupId}})
         groupMembers.forEach(groupMember => groupMember.destroy)
 
-        await Group.destroy(
-            { where: { group_id : groupId } }
-        )
+        group.destroy();
     } catch (error) {
         throw error;
     }
@@ -144,7 +140,12 @@ export async function deleteGroup(groupId : number){
 // 그룹 강퇴
 export async function banGroup(groupId : number, userId : number) {
     try {
-        // todo[dain] 리더인지 확인 필요
+        const group = await Group.findOne({ where : { group_id : groupId}});
+        
+        if (group.leader_id !== userId) {
+            throw new Error("그룹 권한이 없습니다.")
+        }
+
         await GroupMember.destroy({where : {user_id : userId, group_id : groupId}})
     } catch (error) {
         throw error; 
@@ -164,9 +165,13 @@ export async function exitGroup (groupId : number, userId : number) {
 export async function changeLeader (groupId : number, userId : number) {
     try {
         // 리더 확인 로직 필요
-        const user = await User.findOne({ where : {user_id : userId}});
         const group = await Group.findOne({ where : {group_id : groupId}});
-        group.leader_id = user.user_id;
+
+        if (group.leader_id !== userId) {
+            throw new Error("그룹 권한이 없습니다.")
+        }
+
+        group.leader_id = userId;
         group.save();
     } catch (error) {
         throw error;
