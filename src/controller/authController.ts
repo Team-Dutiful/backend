@@ -108,6 +108,15 @@ const changepwd = async (req: Request, res: Response) => {
   }
 };
 
+const email = async (req: Request, res: Response) => {
+  try {
+    await authService.sendAuthMail();
+    console.log("email success");
+  } catch (e) {
+    return res.status(400).json({ status: 400, message: e.message });
+  }
+};
+
 function createJwtToken(user: UserAttributes) {
   return jwt.sign(
     { identification: user.identification },
@@ -118,4 +127,4 @@ function createJwtToken(user: UserAttributes) {
   );
 }
 
-export default { login, logout, signup, findid, changepwd };
+export default { login, logout, signup, findid, changepwd, email };

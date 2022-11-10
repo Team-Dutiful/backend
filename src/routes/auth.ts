@@ -38,6 +38,8 @@ router.post("logout", controller.logout);
 
 router.post("/find-id", validateFindID, controller.findid);
 
+router.post("/email-test", controller.email);
+
 router.post(
   "/change-pwd",
   [
