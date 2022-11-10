@@ -6,9 +6,15 @@
   "devDependencies": {
     "@babel/core": "^7.19.6",
     "@babel/preset-env": "^7.19.4",
+    "@types/bcrypt": "^5.0.0",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.14",
+<<<<<<< HEAD
     "@types/jest": "^29.2.2",
+=======
+    "@types/jest": "^29.2.0",
+    "@types/jsonwebtoken": "^8.5.9",
+>>>>>>> 4c8a7e58320d328f45f3dbb244375cfda33f78a8
     "@types/node": "^18.8.5",
     "@types/validator": "^13.7.8",
     "babel-jest": "^29.2.2",
@@ -25,7 +31,7 @@
   "scripts": {
     "start": "node dist/index.js",
     "build": "tsc -p .",
-    "dev": "nodemon --watch \"src/**/*.ts\" --exec \"ts-node -r tsconfig-paths/register\" src/index.ts",
+    "dev": "nodemon --watch \"src/**/*.ts\" --exec \"ts-node -r tsconfig-paths/register --files\" src/index.ts",
     "create_db": "ts-node src/db/migrations/create-db.ts",
     "migration_all": "ts-node src/db/migrations/migration-all-table.ts",
     "connect": "ts-node src/db/migrations/connect-relationships.ts",
@@ -34,10 +40,16 @@
   },
   "dependencies": {
 <<<<<<< HEAD
+<<<<<<< HEAD
     "builder-pattern": "^2.1.0",
 =======
 >>>>>>> fa78839b7885ced006b35546270b2c1841577d17
+=======
+    "bcrypt": "^5.1.0",
+>>>>>>> 4c8a7e58320d328f45f3dbb244375cfda33f78a8
     "eslint-import-resolver-alias": "^1.1.2",
+    "express-validator": "^6.14.2",
+    "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.3.3",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^6.25.2",

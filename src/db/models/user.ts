@@ -1,9 +1,8 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "./index";
-import { Group } from "./group";
 
-interface UserAttributes {
-  user_id: number;
+export interface UserAttributes {
+  user_id?: number;
   identification: string;
   password: string;
   name: string;
@@ -34,7 +33,7 @@ User.init(
       allowNull: false,
     },
     password: {
-      type: DataTypes.STRING(45),
+      type: DataTypes.STRING(100),
       allowNull: false,
     },
     name: {
