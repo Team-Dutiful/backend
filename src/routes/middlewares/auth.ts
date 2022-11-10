@@ -34,7 +34,7 @@ export const isAuth = async (
   if (!user) {
     return res.status(401).json(AUTH_ERROR);
   }
-  req.identification = user.identification; // 다른 콜백에서 동일하게 접속해야 하기때문에 사용
+  req.user_id = user.user_id;
 
   next();
 };
