@@ -40,7 +40,7 @@ class ScheduleService {
                 month: calendarWork[i].month,
                 day: calendarWork[i].day,
                 user_id: exUser.user_id,
-                work_id: exWork.work_id,
+                work_id: calendarWork[i].work_id,
               },
               {
                 include: [
@@ -53,6 +53,7 @@ class ScheduleService {
                 ],
               }
             );
+            break;
 
           case "update":
             const updateCalendar = await CalendarDate.findOne({
@@ -63,6 +64,7 @@ class ScheduleService {
 
             updateCalendar.work_id = calendarWork[i].work_id;
             updateCalendar.save();
+            break;
 
           case "delete":
             const deleteCalendar = await CalendarDate.findOne({
@@ -72,6 +74,7 @@ class ScheduleService {
             });
 
             deleteCalendar.destroy();
+            break;
         }
       }
     } catch (error) {
