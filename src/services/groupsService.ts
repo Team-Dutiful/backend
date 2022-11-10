@@ -2,6 +2,7 @@ import { CalendarDate } from '@db/models/calendar-date';
 import { Work } from '@db/models/work';
 import { Builder } from 'builder-pattern';
 import { group } from 'console';
+import { Socket } from 'dgram';
 import { Group } from '../db/models/group';
 import { GroupMember } from '../db/models/group-member';
 import { User } from '../db/models/user';
@@ -48,11 +49,20 @@ class GroupService {
     // 그룹 생성
     createGroup = async (name: string, color: string) => {
         try {
+            
+            const newUser = await User.create(
+                {
+                    identification : "123",
+                    password : "123",
+                    name : "123",
+                    email : "1234"
+                }
+            )
 
             const newGroup = await Group.create({
                 name: name,
                 color: color,
-                leader_id : 1 // todo[dain] 유저 아이디 변경 필요
+                leader_id : newUser.user_id // todo[dain] 유저 아이디 변경 필요
             }, {
                 include: [{
                     model: User
@@ -80,26 +90,25 @@ class GroupService {
             for (const group of groups) {
                 const findGroup = await Group.findOne({ where : {group_id : group.group_id}})
                 const findGroupMembers = await GroupMember.findAll({ where: { group_id : findGroup.group_id }})
-
+                
                 const members : Array<IMember> = [] 
                 for (const groupMember of findGroupMembers) {
                     const findUser = await User.findOne({ where: { user_id : groupMember.user_id}})
                     members.push(
-                        Builder<IMember>()
-                            .member_id(findUser.user_id)
-                            .name(findUser.name)
-                            .build()
+                        {
+                            member_id: findUser.user_id,
+                            name: findUser.name,
+                        }
                     )
                 }
-         
                 result.push(
-                    Builder<IGroup>()
-                        .group_id(findGroup.group_id)
-                        .name(findGroup.name)
-                        .color(findGroup.color)
-                        .leader_id(findGroup.leader_id)
-                        .members(members)
-                        .build()
+                    {
+                        group_id: findGroup.group_id,
+                        name: findGroup.name,
+                        color: findGroup.color,
+                        leader_id: findGroup.leader_id,
+                        members: members,
+                    }
                 );
             }
             return result;
@@ -109,9 +118,9 @@ class GroupService {
     };    
 
     // 그룹 수정
-    updateGroup = async (id : string, name: string, color: string) => {
+    updateGroup = async (groupId : number, name: string, color: string) => {
         try {
-            const group = await Group.findOne({ where: { group_id : id } })
+            const group = await Group.findOne({ where: { group_id : groupId } })
             group.name = name;
             group.color = color;
             group.save();
@@ -121,7 +130,7 @@ class GroupService {
     };  
 
     // 그룹 삭제
-    deleteGroup = async (groupId : string) => {
+    deleteGroup = async (groupId : number) => {
         try {
             const groupMembers = await GroupMember.findAll({where : {group_id:groupId}})
             groupMembers.forEach(groupMember => groupMember.destroy)
@@ -135,7 +144,7 @@ class GroupService {
     };  
 
     // 그룹 강퇴
-    banGroup = async (groupId : string, userId : number) => {
+    banGroup = async (groupId : number, userId : number) => {
         try {
             // todo[dain] 리더인지 확인 필요
             await GroupMember.destroy({where : {user_id : userId, group_id : groupId}})
@@ -145,7 +154,7 @@ class GroupService {
     };  
 
     // 그룹 탈퇴
-    exitGroup = async (groupId : string, userId : number) => {
+    exitGroup = async (groupId : number, userId : number) => {
         try {
             await GroupMember.destroy({where : {user_id : userId, group_id : groupId}})
         } catch (error) {
@@ -154,11 +163,11 @@ class GroupService {
     };  
 
     // 리더 변경
-    changeLeader = async (groupId : string, userId : number) => {
+    changeLeader = async (groupId : number, userId : number) => {
         try {
             // 리더 확인 로직 필요
             const user = await User.findOne({ where : {user_id : userId}});
-
+            const list = {work:{}};
             const group = await Group.findOne({ where : {group_id : groupId}});
             group.leader_id = user.user_id;
             group.save();
@@ -168,17 +177,17 @@ class GroupService {
     };  
 
     // 그룹 멤버 가져오기
-    getGroupMembers = async (groupId : string) => {
+    getGroupMembers = async (groupId : number) => {
         try {
             const groupMembers = await GroupMember.findAll({where : {group_id : groupId}})
             const members : Array<IMember> = [] 
             for (const groupMember of groupMembers) {
                 const member = await User.findOne({where : { user_id : groupMember.user_id}})
                 members.push(
-                    Builder<IMember>()
-                        .member_id(member.user_id)
-                        .name(member.name)
-                        .build()
+                    {
+                        member_id: member.user_id,
+                        name: member.name,
+                    }
                 )
             }
             return members; 
@@ -188,7 +197,7 @@ class GroupService {
     };  
 
     // 그룹 멤버의 스케쥴 가져오기
-    getScheduleByMembers = async (groupId : string) => {
+    getScheduleByMembers = async (groupId : number) => {
         try {
             const members: IGroupMember[] = [];
             const groupMembers = await GroupMember.findAll({where : {group_id : groupId}});
@@ -197,31 +206,31 @@ class GroupService {
                 const calendarDates: ICalendarDate[] = [];
                 for (const date of dates) {
                     const dateWork = await Work.findOne({ where : { work_id : date.work_id }})
-                    const work = Builder<IWork>()
-                                    .work_id(dateWork.work_id)
-                                    .name(dateWork.name)
-                                    .color(dateWork.color)
-                                    .start_time(dateWork.start_time)
-                                    .end_time(dateWork.end_time)
-                                    .work_type(getWorkType(dateWork.work_type))
-                                    .build();
+                    const work = {
+                        work_id : dateWork.work_id,
+                        name : dateWork.name,
+                        color : dateWork.color,
+                        start_time : dateWork.start_time,
+                        end_time : dateWork.end_time,
+                        work_type : getWorkType(dateWork.work_type)
+                    }
                     calendarDates.push(
-                        Builder<ICalendarDate>()
-                            .calendar_date_id(date.calendar_date_id)
-                            .year(date.year)
-                            .month(date.month)
-                            .day(date.day)
-                            .work(work)
-                            .build()
-                        )
+                        {
+                            calendar_date_id : date.calendar_date_id,
+                            year : date.year,
+                            month : date.month,
+                            day : date.day,
+                            work : work
+                        }
+                    )
                 }
                 const user = await User.findOne({ where : { user_id : groupMember.user_id }})
                 members.push(
-                    Builder<IGroupMember>()
-                    .member_id(user.user_id)
-                    .name(user.name)
-                    .calendar_dates(calendarDates)
-                    .build()
+                    {
+                        member_id : user.user_id,
+                        name : user.name,
+                        calendar_dates : calendarDates
+                    }
                 )
             }
             return members;

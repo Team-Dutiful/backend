@@ -22,7 +22,7 @@ const getGroup = async (req: Request, res: Response) => {
 
 const updateGroup = async (req: Request, res: Response) => {
   try {
-    const groupId = await service.updateGroup(req.params.groupId, req.body.name, req.body.color);
+    const groupId = await service.updateGroup(+req.params.groupId, req.body.name, req.body.color);
     return res.status(200).json({ status: 200, id: groupId });
   } catch (e) {
     return res.status(400).json({ status: 400, message: e.message });
@@ -31,7 +31,7 @@ const updateGroup = async (req: Request, res: Response) => {
 
 const deleteGroup = async (req: Request, res: Response) => {
   try {
-    const groupId = await service.deleteGroup(req.params.groupId);
+    const groupId = await service.deleteGroup(+req.params.groupId);
     return res.status(200).json({ status: 200, id: groupId });
   } catch (e) {
     return res.status(400).json({ status: 400, message: e.message });
@@ -40,7 +40,7 @@ const deleteGroup = async (req: Request, res: Response) => {
 
 const banGroup = async (req: Request, res: Response) => {
   try {
-    const groupId = await service.banGroup(req.params.groupId, req.body.user_id);
+    const groupId = await service.banGroup(+req.params.groupId, req.body.user_id);
     return res.status(200).json({ status: 200, id: groupId });
   } catch (e) {
     return res.status(400).json({ status: 400, message: e.message });
@@ -49,7 +49,7 @@ const banGroup = async (req: Request, res: Response) => {
 
 const exitGroup = async (req: Request, res: Response) => {
   try {
-    await service.exitGroup(req.params.groupId, req.body.user_id);
+    await service.exitGroup(+req.params.groupId, req.body.user_id);
     return res.status(200).json({ status: 200});
   } catch (e) {
     return res.status(400).json({ status: 400, message: e.message });
@@ -58,7 +58,7 @@ const exitGroup = async (req: Request, res: Response) => {
 
 const changeLeader = async (req: Request, res: Response) => {
   try {
-    const groupId = await service.changeLeader(req.params.groupId, req.body.user_id);
+    const groupId = await service.changeLeader(+req.params.groupId, req.body.user_id);
     return res.status(200).json({ status: 200, id: groupId });
   } catch (e) {
     return res.status(400).json({ status: 400, message: e.message });
@@ -67,7 +67,7 @@ const changeLeader = async (req: Request, res: Response) => {
 
 const getGroupMembers = async (req: Request, res: Response) => {
   try {
-    const groupId = await service.getGroupMembers(req.params.groupId);;
+    const groupId = await service.getGroupMembers(+req.params.groupId);;
     return res.status(200).json({ status: 200, id: groupId });
   } catch (e) {
     return res.status(400).json({ status: 400, message: e.message });
@@ -76,7 +76,7 @@ const getGroupMembers = async (req: Request, res: Response) => {
 
 const getScheduleByMembers = async (req: Request, res: Response) => {
   try {
-    const groupId = await service.getScheduleByMembers(req.params.group_id);
+    const groupId = await service.getScheduleByMembers(+req.params.groupId);
     return res.status(200).json({ status: 200, id: groupId });
   } catch (e) {
     return res.status(400).json({ status: 400, message: e.message });
