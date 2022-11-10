@@ -8,8 +8,12 @@ export const config = {
     password: process.env.DB_PASSWORD,
     name: process.env.DB_DBNAME || "database_development",
     host: process.env.DB_HOST || "localhost",
-    port: process.env.DB_PORT || 8080,
+    port: process.env.DB_PORT,
     dialect: "mysql",
+  },
+  server: {
+    host: process.env.SERVER_HOST,
+    port: parseInt(process.env.SERVER_PORT),
   },
   jwt: {
     secretKey: process.env.JWT_SECRET,
