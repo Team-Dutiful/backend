@@ -47,7 +47,7 @@ export async function sendAuthMail() {
     secure: false,
     auth: {
       user: "teamdutiful",
-      pass: "ebxlvnf1234!!",
+      pass: "avkanfsowoilplqy",
     },
   });
 
