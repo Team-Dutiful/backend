@@ -5,7 +5,8 @@
       "@controller/*": ["src/controller/*"],
       "@db/*": ["src/db/*"],
       "@routes/*": ["src/routes/*"],
-      "@services/*": ["src/services/*"]
+      "@services/*": ["src/services/*"],
+      "@type/*": ["src/type/*"]
     },
     "lib": ["es5", "es6"],
     "target": "es6",
