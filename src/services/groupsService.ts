@@ -1,9 +1,9 @@
 import { CalendarDate } from '@db/models/calendar-date';
 import { Work } from '@db/models/work';
-import { Group } from '../db/models/group';
-import { GroupMember } from '../db/models/group-member';
-import { User } from '../db/models/user';
-import { WorkType, getWorkType } from '../enum/workType';
+import { Group } from '@db/models/group';
+import { GroupMember } from '@db/models/group-member';
+import { User } from '@db/models/user';
+import { WorkType, getWorkType } from '@type/workType';
 
 interface IMember {
     member_id : number,
@@ -56,16 +56,17 @@ export async function createGroup(userId : number, name: string, color: string) 
         
         await GroupMember.create({
             group_id : newGroup.group_id,
-            user_id : 1
+            user_id : userId
         })
-
+        
+        return { group_id : newGroup.group_id }
     } catch (error) {
         throw error;
     }
   }
   
   
-    // 그룹 가져오기
+// 그룹 가져오기
 export async function getGroup(userId : number) {
     try {
         const result: IGroup[] = [];
@@ -96,7 +97,7 @@ export async function getGroup(userId : number) {
                 }
             );
         }
-        return result;
+        return { groups : result };
     } catch (error) {
         throw error;
     }
@@ -138,11 +139,11 @@ export async function deleteGroup(userId: number, groupId : number){
 };  
 
 // 그룹 강퇴
-export async function banGroup(groupId : number, userId : number) {
+export async function banGroup(groupId : number, leaderId : number, userId : number) {
     try {
         const group = await Group.findOne({ where : { group_id : groupId}});
         
-        if (group.leader_id !== userId) {
+        if (group.leader_id != leaderId) {
             throw new Error("그룹 권한이 없습니다.")
         }
 
@@ -162,12 +163,12 @@ export async function exitGroup (groupId : number, userId : number) {
 };  
 
 // 리더 변경
-export async function changeLeader (groupId : number, userId : number) {
+export async function changeLeader (groupId : number, leaderId : number, userId : number) {
     try {
         // 리더 확인 로직 필요
         const group = await Group.findOne({ where : {group_id : groupId}});
 
-        if (group.leader_id !== userId) {
+        if (group.leader_id !== leaderId) {
             throw new Error("그룹 권한이 없습니다.")
         }
 
@@ -192,7 +193,7 @@ export async function getGroupMembers (groupId : number) {
                 }
             )
         }
-        return members; 
+        return {members : members}; 
     } catch (error) {
         throw error;
     }
