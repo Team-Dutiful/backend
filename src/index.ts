@@ -5,8 +5,8 @@ import { sequelize } from "@db/models";
 import router from "@routes/index";
 import { config } from "config";
 
-const PORT: number = parseInt(config.db.port as string, 10) || 5000;
-const HOST: string = config.db.host || "localhost";
+const HOST: string = config.server.host || "localhost";
+const PORT: number = config.server.port;
 const DATEBASE: string = config.db.name;
 
 const app: Express = express();
