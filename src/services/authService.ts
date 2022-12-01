@@ -10,6 +10,10 @@ export async function findByUserNameAndEmail(name: string, email: string) {
   return User.findAll({ where: { name, email } });
 }
 
+export async function findByEmail(email: string) {
+  return User.findOne({ where: { email } });
+}
+
 export async function findById(id: number) {
   return User.findByPk(id);
 }
@@ -29,9 +33,9 @@ export async function changeUserPasswrod(user_id: number, newPassword: string) {
   );
 }
 
-export async function sendAuthMail() {
-  let emailTemplate;
-  const authNum = 12345;
+export async function sendCodeMail(email: string) {
+  let emailTemplate: string = "";
+  const authNum = generateRandom(111111, 999999);
   ejs.renderFile("src/ejs/auth.ejs", { authCode: authNum }, (error, data) => {
     if (error) {
       console.log(error);
@@ -53,7 +57,7 @@ export async function sendAuthMail() {
 
   let mailOptions = await transporter.sendMail({
     from: "Dutiful",
-    to: "azss0470@gmail.com",
+    to: email,
     subject: "듀티풀 회원가입 인증번호 입니다.",
     html: emailTemplate,
   });
@@ -66,4 +70,9 @@ export async function sendAuthMail() {
     console.log("Finish sending email : " + info.response);
     transporter.close();
   });
+  return authNum;
+}
+
+function generateRandom(min: number, max: number) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
