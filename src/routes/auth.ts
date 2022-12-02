@@ -27,11 +27,8 @@ const validateFindID = [
 
 const validateSignup = [...validateLogin, ...validateFindID];
 
-router.post(
-  "/signup", //
-  validateSignup,
-  controller.signup
-);
+router.post("/signup", validateSignup, controller.signup);
+
 router.post("/login", validateLogin, controller.login);
 
 router.post("/logout", controller.logout);
