@@ -34,8 +34,9 @@ export async function changeUserPasswrod(user_id: number, newPassword: string) {
 }
 
 export async function sendCodeMail(email: string) {
-  let emailTemplate: string = "";
   const authNum = generateRandom(111111, 999999);
+  let emailTemplate: string;
+
   ejs.renderFile("src/ejs/auth.ejs", { authCode: authNum }, (error, data) => {
     if (error) {
       console.log(error);
@@ -44,32 +45,28 @@ export async function sendCodeMail(email: string) {
     emailTemplate = data;
   });
 
-  let transporter = nodemailer.createTransport({
+  const transporter = nodemailer.createTransport({
     service: "gmail",
     host: "smtp.gmail.com",
     port: 587,
     secure: false,
     auth: {
       user: "teamdutiful",
-      pass: "avkanfsowoilplqy",
+      pass: "ljpbgpfrlkiuktbm",
     },
   });
 
-  let mailOptions = await transporter.sendMail({
+  const mailOptions = {
     from: "Dutiful",
     to: email,
     subject: "듀티풀 회원가입 인증번호 입니다.",
     html: emailTemplate,
-  });
+  };
 
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.log(error);
-      throw error;
-    }
-    console.log("Finish sending email : " + info.response);
-    transporter.close();
-  });
+  const info = await transporter.sendMail(mailOptions);
+  transporter.close();
+  console.log("Finish sending email :", info.accepted[0]);
+
   return authNum;
 }
 
