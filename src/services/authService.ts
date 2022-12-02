@@ -1,3 +1,4 @@
+import { config } from "config";
 import { User, UserAttributes } from "@db/models/user";
 import nodemailer from "nodemailer";
 import ejs from "ejs";
@@ -51,8 +52,8 @@ export async function sendCodeMail(email: string) {
     port: 587,
     secure: false,
     auth: {
-      user: "teamdutiful",
-      pass: "ljpbgpfrlkiuktbm",
+      user: config.admin.email,
+      pass: config.admin.password,
     },
   });
 

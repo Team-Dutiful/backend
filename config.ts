@@ -22,4 +22,8 @@ export const config = {
   bcrypt: {
     saltRounds: parseInt(process.env.BCRYPT_SALT_ROUNDS) || 10,
   },
+  admin: {
+    email: process.env.EMAIL,
+    password: process.env.PASSWORD,
+  },
 };
