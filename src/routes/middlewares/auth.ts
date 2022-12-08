@@ -11,30 +11,21 @@ export const isAuth = async (
   res: Response,
   next: NextFunction
 ) => {
-  const authHeader = req.get("Authorization");
+  const accessToken = req.cookies.accessToken;
 
-  if (!authHeader && authHeader.startsWith("Bearer ")) {
-    return res.status(401).json(AUTH_ERROR);
-  }
+  try {
+    const decodedToken = jwt.decode(accessToken) as UserAttributes;
+    const user = await authService.findByUserIdentification(
+      decodedToken.identification
+    );
 
-  const token = authHeader.split(" ")[1];
-
-  jwt.verify(token, config.jwt.secretKey, (error) => {
-    if (error) {
+    if (!user) {
       return res.status(401).json(AUTH_ERROR);
     }
-  });
-
-  const decodedToken = jwt.decode(token) as UserAttributes;
-
-  const user = await authService.findByUserIdentification(
-    decodedToken.identification
-  );
-
-  if (!user) {
+    req.user_id = user.user_id;
+    next();
+  } catch (error) {
+    console.error(error);
     return res.status(401).json(AUTH_ERROR);
   }
-  req.user_id = user.user_id;
-
-  next();
 };
