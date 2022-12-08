@@ -11,6 +11,8 @@ interface GroupMemberAttributes {
 
 export class GroupMember extends Model<GroupMemberAttributes> {
   public group_member_id: number;
+  public user_id: number;
+  public group_id: number;
 }
 
 GroupMember.init(
