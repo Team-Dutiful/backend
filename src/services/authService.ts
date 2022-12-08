@@ -8,7 +8,7 @@ export async function findByUserIdentification(identification: string) {
 }
 
 export async function findByUserNameAndEmail(name: string, email: string) {
-  return User.findAll({ where: { name, email } });
+  return User.findOne({ where: { name, email } });
 }
 
 export async function findByEmail(email: string) {
@@ -23,7 +23,7 @@ export async function createUser(user: UserAttributes) {
   return User.create(user).then((data) => console.log(data.identification));
 }
 
-export async function changeUserPasswrod(user_id: number, newPassword: string) {
+export async function changeUserPassword(user_id: number, newPassword: string) {
   return User.update(
     { password: newPassword },
     {

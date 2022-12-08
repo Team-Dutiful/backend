@@ -76,16 +76,17 @@ const logout = (req: Request, res: Response) => {
 
 const findid = async (req: Request, res: Response) => {
   const { name, email } = req.body;
-  const users = await authService.findByUserNameAndEmail(name, email);
-  if (!users.length) {
+  const user = await authService.findByUserNameAndEmail(name, email);
+  if (!user) {
     return res.status(401).json({ message: "Invaild user" });
   }
+  console.log(user);
 
   return res.status(200).json({
     status: "200",
     message: "OK",
     body: {
-      identification: users.map((user) => user.identification),
+      identification: user.identification,
     },
   });
 };
@@ -97,7 +98,7 @@ const changepwd = async (req: Request, res: Response) => {
   // saltRounds를 이용하여 암호화를 더 복잡하게 한다.
   const hashed = await bcrypt.hash(password, config.bcrypt.saltRounds);
   try {
-    await authService.changeUserPasswrod(req.user_id, hashed);
+    await authService.changeUserPassword(req.user_id, hashed);
     return res.status(200).json({
       status: "200",
       message: "OK",
