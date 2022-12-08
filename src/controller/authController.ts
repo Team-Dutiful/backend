@@ -124,6 +124,21 @@ const sendCode = async (req: Request, res: Response) => {
   });
 };
 
+const sendCodeAtFindPassword = async (req: Request, res: Response) => {
+  const { email } = req.body;
+  const found = await authService.findByEmail(email);
+  if (!found) {
+    return res.status(409).json({ message: `${email} not exists` });
+  }
+
+  const authNum = await authService.sendCodeMail(email);
+  return res.status(200).json({
+    body: {
+      authNum,
+    },
+  });
+};
+
 function createJwtToken(user: UserAttributes) {
   return jwt.sign(
     { identification: user.identification },
@@ -141,4 +156,5 @@ export default {
   findid,
   changepwd,
   sendCode,
+  sendCodeAtFindPassword,
 };

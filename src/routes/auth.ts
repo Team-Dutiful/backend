@@ -37,6 +37,8 @@ router.post("/find-id", validateFindID, controller.findid);
 
 router.post("/send-code", controller.sendCode);
 
+router.post("/find-send-code", controller.sendCodeAtFindPassword);
+
 router.post(
   "/change-pwd",
   [
