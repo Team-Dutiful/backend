@@ -92,7 +92,7 @@ const findid = async (req: Request, res: Response) => {
 
 const changepwd = async (req: Request, res: Response) => {
   const { password } = req.body;
-  console.log(password);
+
   // 입력 받은 패스워드를 암호화
   // saltRounds를 이용하여 암호화를 더 복잡하게 한다.
   const hashed = await bcrypt.hash(password, config.bcrypt.saltRounds);
@@ -108,6 +108,21 @@ const changepwd = async (req: Request, res: Response) => {
   }
 };
 
+const sendCode = async (req: Request, res: Response) => {
+  const { email } = req.body;
+  const found = await authService.findByEmail(email);
+  if (found) {
+    return res.status(409).json({ message: `${email} already exists` });
+  }
+
+  const authNum = await authService.sendCodeMail(email);
+  return res.status(200).json({
+    body: {
+      authNum,
+    },
+  });
+};
+
 function createJwtToken(user: UserAttributes) {
   return jwt.sign(
     { identification: user.identification },
@@ -118,4 +133,11 @@ function createJwtToken(user: UserAttributes) {
   );
 }
 
-export default { login, logout, signup, findid, changepwd };
+export default {
+  login,
+  logout,
+  signup,
+  findid,
+  changepwd,
+  sendCode,
+};
