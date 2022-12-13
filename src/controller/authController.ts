@@ -109,6 +109,23 @@ const changepwd = async (req: Request, res: Response) => {
   }
 };
 
+const changepwdByEmail = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+  const hashed = await bcrypt.hash(password, config.bcrypt.saltRounds);
+  const user = await authService.findByEmail(email);
+
+  try {
+    await authService.changeUserPassword(user.user_id, hashed);
+    return res.status(200).json({
+      status: "200",
+      message: "OK",
+      body: {},
+    });
+  } catch (error) {
+    return res.status(400).json({ status: 400, message: error.message });
+  }
+};
+
 const sendCode = async (req: Request, res: Response) => {
   const { email } = req.body;
   const found = await authService.findByEmail(email);
@@ -116,7 +133,7 @@ const sendCode = async (req: Request, res: Response) => {
     return res.status(409).json({ message: `${email} already exists` });
   }
 
-  const authNum = await authService.sendCodeMail(email);
+  const authNum = await authService.sendCodeMail(email, "signup");
   return res.status(200).json({
     body: {
       authNum,
@@ -131,7 +148,7 @@ const sendCodeAtFindPassword = async (req: Request, res: Response) => {
     return res.status(409).json({ message: `${email} not exists` });
   }
 
-  const authNum = await authService.sendCodeMail(email);
+  const authNum = await authService.sendCodeMail(email, "changepwd");
   return res.status(200).json({
     body: {
       authNum,
@@ -155,6 +172,7 @@ export default {
   signup,
   findid,
   changepwd,
+  changepwdByEmail,
   sendCode,
   sendCodeAtFindPassword,
 };
