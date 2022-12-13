@@ -34,11 +34,16 @@ export async function changeUserPassword(user_id: number, newPassword: string) {
   );
 }
 
-export async function sendCodeMail(email: string) {
+export async function sendCodeMail(
+  email: string,
+  type: "signup" | "changepwd"
+) {
   const authNum = generateRandom(111111, 999999);
   let emailTemplate: string;
+  const file =
+    type === "signup" ? "src/ejs/signup.ejs" : "src/ejs/change_pwd.ejs";
 
-  ejs.renderFile("src/ejs/auth.ejs", { authCode: authNum }, (error, data) => {
+  ejs.renderFile(file, { authCode: authNum }, (error, data) => {
     if (error) {
       console.log(error);
       throw error;
@@ -60,7 +65,10 @@ export async function sendCodeMail(email: string) {
   const mailOptions = {
     from: "Dutiful",
     to: email,
-    subject: "듀티풀 회원가입 인증번호 입니다.",
+    subject:
+      type === "signup"
+        ? "[Dutiful] 회원가입 인증번호 입니다."
+        : "[Dutiful] 비밀번호 변경 인증번호 입니다.",
     html: emailTemplate,
   };
 

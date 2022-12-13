@@ -40,6 +40,18 @@ router.post("/send-code", controller.sendCode);
 router.post("/find-send-code", controller.sendCodeAtFindPassword);
 
 router.post(
+  "/change-pwd-from-email",
+  [
+    body("password")
+      .trim()
+      .isLength({ min: 5 })
+      .withMessage("패스워드는 5자 이상"),
+    validate,
+  ],
+  controller.changepwdByEmail
+);
+
+router.post(
   "/change-pwd",
   [
     body("password")
