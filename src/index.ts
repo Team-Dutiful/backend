@@ -11,7 +11,12 @@ const DATEBASE: string = config.db.name;
 
 const app: Express = express();
 
-app.use(cors({ credentials: true, origin: "http://localhost:3002" }));
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use((req: Request, res: Response, next: NextFunction) => {
   console.log(`Request Occur! ${req.method}, ${req.url}`);

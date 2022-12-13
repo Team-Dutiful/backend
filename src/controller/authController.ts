@@ -76,28 +76,29 @@ const logout = (req: Request, res: Response) => {
 
 const findid = async (req: Request, res: Response) => {
   const { name, email } = req.body;
-  const users = await authService.findByUserNameAndEmail(name, email);
-  if (!users.length) {
+  const user = await authService.findByUserNameAndEmail(name, email);
+  if (!user) {
     return res.status(401).json({ message: "Invaild user" });
   }
+  console.log(user);
 
   return res.status(200).json({
     status: "200",
     message: "OK",
     body: {
-      identification: users.map((user) => user.identification),
+      identification: user.identification,
     },
   });
 };
 
 const changepwd = async (req: Request, res: Response) => {
   const { password } = req.body;
-  console.log(password);
+
   // 입력 받은 패스워드를 암호화
   // saltRounds를 이용하여 암호화를 더 복잡하게 한다.
   const hashed = await bcrypt.hash(password, config.bcrypt.saltRounds);
   try {
-    await authService.changeUserPasswrod(req.user_id, hashed);
+    await authService.changeUserPassword(req.user_id, hashed);
     return res.status(200).json({
       status: "200",
       message: "OK",
@@ -106,6 +107,36 @@ const changepwd = async (req: Request, res: Response) => {
   } catch (e) {
     return res.status(400).json({ status: 400, message: e.message });
   }
+};
+
+const sendCode = async (req: Request, res: Response) => {
+  const { email } = req.body;
+  const found = await authService.findByEmail(email);
+  if (found) {
+    return res.status(409).json({ message: `${email} already exists` });
+  }
+
+  const authNum = await authService.sendCodeMail(email);
+  return res.status(200).json({
+    body: {
+      authNum,
+    },
+  });
+};
+
+const sendCodeAtFindPassword = async (req: Request, res: Response) => {
+  const { email } = req.body;
+  const found = await authService.findByEmail(email);
+  if (!found) {
+    return res.status(409).json({ message: `${email} not exists` });
+  }
+
+  const authNum = await authService.sendCodeMail(email);
+  return res.status(200).json({
+    body: {
+      authNum,
+    },
+  });
 };
 
 function createJwtToken(user: UserAttributes) {
@@ -118,4 +149,12 @@ function createJwtToken(user: UserAttributes) {
   );
 }
 
-export default { login, logout, signup, findid, changepwd };
+export default {
+  login,
+  logout,
+  signup,
+  findid,
+  changepwd,
+  sendCode,
+  sendCodeAtFindPassword,
+};
