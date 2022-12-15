@@ -5,7 +5,7 @@ import { isAuth } from "./middlewares/auth";
 const router: Router = express.Router();
 
 router.post("/", isAuth, controller.createGroup);
-router.put("/:groupId", isAuth,controller.updateGroup);
+router.put("/:groupId", isAuth, controller.updateGroup);
 router.get("/", isAuth, controller.getGroup);
 router.delete("/:groupId", isAuth, controller.deleteGroup);
 

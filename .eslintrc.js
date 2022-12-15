@@ -6,6 +6,7 @@ export const settings = {
         ["@db", "./src/db"],
         ["@routes", "./src/routes"],
         ["@services", "./src/services"],
+        ["@type", "./src/type"]
       ],
     },
   },
