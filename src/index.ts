@@ -4,6 +4,7 @@ import cors from "cors";
 import { sequelize } from "@db/models";
 import router from "@routes/index";
 import { config } from "config";
+import cookieParser from "cookie-parser";
 
 const HOST: string = config.server.host || "localhost";
 const PORT: number = config.server.port;
@@ -17,6 +18,7 @@ app.use(
     credentials: true,
   })
 );
+app.use(cookieParser());
 app.use(express.json());
 app.use((req: Request, res: Response, next: NextFunction) => {
   console.log(`Request Occur! ${req.method}, ${req.url}`);
