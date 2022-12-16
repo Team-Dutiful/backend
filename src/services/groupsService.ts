@@ -27,8 +27,8 @@ interface IWork {
   work_id: number;
   name: string;
   color: string;
-  start_time: Date;
-  end_time: Date;
+  start_time: string;
+  end_time: string;
   work_type: WorkType;
 }
 

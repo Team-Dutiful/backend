@@ -3,29 +3,24 @@ import { User } from "@db/models/user";
 
 class WorksService {
   createWork = async (
+    user_id: number,
     name: string,
     color: string,
-    start_time: Date,
-    end_time: Date,
+    start_time: string,
+    end_time: string,
     work_type: string,
     memo: string
   ) => {
     try {
-      const newUser = await User.create({
-        identification: "hello",
-        password: "1234",
-        name: "hi",
-        email: "tmax.com",
-      });
-      const newWork = await Work.create(
+      await Work.create(
         {
-          name: "name",
-          color: "#12345",
-          start_time: new Date(),
-          end_time: new Date(),
-          work_type: "DAY",
-          memo: "memo",
-          user_id: newUser.user_id,
+          name: name,
+          color: color,
+          start_time: start_time,
+          end_time: end_time,
+          work_type: work_type,
+          memo: memo,
+          user_id: user_id,
         },
         {
           include: [
@@ -59,8 +54,8 @@ class WorksService {
     work_id: number,
     name: string,
     color: string,
-    start_time: Date,
-    end_time: Date,
+    start_time: string,
+    end_time: string,
     work_type: string,
     memo: string
   ) => {

@@ -4,9 +4,10 @@ const service = new WorksService();
 
 const createWork = async (req: Request, res: Response) => {
   try {
-    const { name, color, start_time, end_time, work_type, memo } = req.body;
-
+    const { user_id, name, color, start_time, end_time, work_type, memo } =
+      req.body;
     await service.createWork(
+      user_id,
       name,
       color,
       start_time,
