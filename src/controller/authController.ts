@@ -29,7 +29,11 @@ const signup = async (req: Request<{}, {}, UserAttributes>, res: Response) => {
     res.status(200).json({
       status: "200",
       message: "OK",
-      body: {},
+      body: {
+        identification,
+        email,
+        name,
+      },
     });
   } catch (e) {
     return res.status(400).json({ status: 400, message: e.message });
@@ -59,6 +63,8 @@ const login = async (req: Request, res: Response) => {
       message: "OK",
       body: {
         identification,
+        name: user.name,
+        email: user.email,
       },
     });
   } catch (e) {
@@ -119,7 +125,11 @@ const changepwdByEmail = async (req: Request, res: Response) => {
     return res.status(200).json({
       status: "200",
       message: "OK",
-      body: {},
+      body: {
+        identification: user.identification,
+        email: user.email,
+        name: user.name,
+      },
     });
   } catch (error) {
     return res.status(400).json({ status: 400, message: error.message });
