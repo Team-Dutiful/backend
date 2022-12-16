@@ -62,6 +62,7 @@ const login = async (req: Request, res: Response) => {
       status: " 200",
       message: "OK",
       body: {
+        user_id: user.user_id,
         identification,
         name: user.name,
         email: user.email,
