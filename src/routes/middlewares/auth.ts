@@ -15,6 +15,7 @@ export const isAuth = async (
 
   try {
     const decodedToken = jwt.decode(accessToken) as UserAttributes;
+    console.log(decodedToken);
     const user = await authService.findByUserIdentification(
       decodedToken.identification
     );

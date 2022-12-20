@@ -4,6 +4,9 @@ import { Group } from "@db/models/group";
 import { GroupMember } from "@db/models/group-member";
 import { User } from "@db/models/user";
 import { WorkType, getWorkType } from "@type/workType";
+import ejs from "ejs";
+import nodemailer from "nodemailer";
+import { config } from "config";
 
 interface IMember {
   member_id: number;
@@ -285,4 +288,57 @@ export async function getScheduleByMembers(groupId: number) {
   } catch (error) {
     throw error;
   }
+}
+
+// 멤버 초대하기
+export async function inviteMember(groupId: number, email: string) {
+  const group = await Group.findOne({
+    where: { group_id: groupId },
+  });
+
+  const findUser = await User.findOne({
+    where: { email: email },
+  });
+
+  if (findUser == null) {
+    throw new Error("해당 이메일을 가진 유저가 존재하지 않습니다.");
+  }
+
+  await GroupMember.create({
+    group_id: group.group_id,
+    user_id: findUser.user_id,
+  });
+
+  let emailTemplate: string;
+  const file = "src/ejs/invite.ejs";
+
+  ejs.renderFile(file, { groupName: group.name }, (error, data) => {
+    if (error) {
+      console.log(error);
+      throw error;
+    }
+    emailTemplate = data;
+  });
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
+    auth: {
+      user: config.admin.email,
+      pass: config.admin.password,
+    },
+  });
+
+  const mailOptions = {
+    from: "Dutiful",
+    to: email,
+    subject: "[Dutiful] 그룹에 초대되었습니다.",
+    html: emailTemplate,
+  };
+
+  const info = await transporter.sendMail(mailOptions);
+  transporter.close();
+  console.log("Finish sending email :", info.accepted[0]);
 }
