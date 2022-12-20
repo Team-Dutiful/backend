@@ -44,8 +44,7 @@ class WorksService {
     }
   };
 
-  getWorkList = async () => {
-    const user_id = 2; // temp user_id
+  getWorkList = async (user_id: number) => {
     const workList = Work.findAll({ where: { user_id: user_id } });
     return workList;
   };
