@@ -4,75 +4,95 @@ import { User } from "@db/models/user";
 
 interface CalendarWorkProps {
   calendar_date_id?: number;
-  year: number;
-  month: number;
-  day: number;
+  year: string;
+  month: string;
+  day: string;
   work_id: number;
-  type: string;
 }
 
-export async function manageSchedule(calendarWork: CalendarWorkProps[], user_id: number) {
+export async function manageSchedule(
+  calendarWork: CalendarWorkProps[],
+  user_id: number
+) {
   try {
-    for (let i = 0; i < calendarWork.length; i++) {
-      switch (calendarWork[i].type) {
-        case "add":
-          await CalendarDate.create(
+    const deleteCalendar = await CalendarDate.findAll({
+      where: {
+        user_id: user_id,
+        year: calendarWork[0].year,
+        month: calendarWork[0].month,
+      },
+    });
+
+    deleteCalendar.forEach((item) => item.destroy());
+
+    calendarWork.forEach(async (item) => {
+      await CalendarDate.create(
+        {
+          year: item.year,
+          month: item.month,
+          day: item.day,
+          user_id: user_id,
+          work_id: item.work_id,
+        },
+        {
+          include: [
             {
-              year: calendarWork[i].year,
-              month: calendarWork[i].month,
-              day: calendarWork[i].day,
-              user_id: user_id,
-              work_id: calendarWork[i].work_id,
+              model: User,
             },
             {
-              include: [
-                {
-                  model: User,
-                },
-                {
-                  model: Work,
-                },
-              ],
-            }
-          );
-          break;
-
-        case "update":
-          const updateCalendar = await CalendarDate.findOne({
-            where: {
-              calendar_date_id: calendarWork[i].calendar_date_id,
+              model: Work,
             },
-          });
-
-          updateCalendar.work_id = calendarWork[i].work_id;
-          updateCalendar.save();
-          break;
-
-        case "delete":
-          const deleteCalendar = await CalendarDate.findOne({
-            where: {
-              calendar_date_id: calendarWork[i].calendar_date_id,
-            },
-          });
-
-          deleteCalendar.destroy();
-          break;
-      }
-    }
+          ],
+        }
+      );
+    });
   } catch (error) {
     throw error;
   }
 }
 
-export async function getSchedule(year: number, month: number) {
+export async function getSchedule(
+  user_id: number,
+  year: string,
+  month: string
+) {
   try {
+    const schedules = [];
+
     const monthSchedule = await CalendarDate.findAll({
       where: {
+        user_id: user_id,
         year: year,
         month: month,
       },
     });
-    return monthSchedule;
+
+    for (const schedule of monthSchedule) {
+      const work = await Work.findOne({
+        where: {
+          user_id: user_id,
+          work_id: schedule.work_id,
+        },
+      });
+
+      schedules.push({
+        calendar_date_id: schedule.calendar_date_id,
+        year: schedule.year,
+        month: schedule.month,
+        day: schedule.day,
+        work: {
+          work_id: work.work_id,
+          name: work.name,
+          color: work.color,
+          start_time: work.start_time,
+          end_time: work.end_time,
+          work_type: work.work_type,
+          memo: work.memo,
+        },
+      });
+    }
+
+    return schedules;
   } catch (error) {
     throw error;
   }

@@ -5,7 +5,7 @@ const router: Router = express.Router();
 
 import controller from "@controller/scheduleController";
 
-router.post("/", isAuth, controller.manageSchedule);
-router.get("/", controller.getSchedule);
+router.post("/manage", isAuth, controller.manageSchedule);
+router.post("/", isAuth, controller.getSchedule);
 
 export default router;
