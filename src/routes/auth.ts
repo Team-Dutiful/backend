@@ -31,6 +31,10 @@ router.post("/signup", validateSignup, controller.signup);
 
 router.post("/login", validateLogin, controller.login);
 
+router.get("/login-kakao", controller.loginKakao);
+
+router.get("/login-naver", controller.loginNaver);
+
 router.post("/logout", controller.logout);
 
 router.post("/find-id", validateFindID, controller.findid);
