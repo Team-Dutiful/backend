@@ -20,7 +20,7 @@ export async function findById(id: number) {
 }
 
 export async function createUser(user: UserAttributes) {
-  return User.create(user).then((data) => console.log(data.identification));
+  return User.create(user);
 }
 
 export async function changeUserPassword(user_id: number, newPassword: string) {

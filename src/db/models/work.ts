@@ -7,8 +7,8 @@ interface WorkAttributes {
   user_id: number;
   name: string;
   color: string;
-  start_time: Date;
-  end_time: Date;
+  start_time: string;
+  end_time: string;
   work_type: string;
   memo: string;
 }
@@ -18,8 +18,8 @@ export class Work extends Model<WorkAttributes> {
   public user_id: number;
   public name: string;
   public color: string;
-  public start_time: Date;
-  public end_time: Date;
+  public start_time: string;
+  public end_time: string;
   public work_type: string;
   public memo: string;
 }
@@ -45,11 +45,11 @@ Work.init(
       allowNull: false,
     },
     start_time: {
-      type: DataTypes.DATE,
+      type: DataTypes.STRING(45),
       allowNull: false,
     },
     end_time: {
-      type: DataTypes.DATE,
+      type: DataTypes.STRING(45),
       allowNull: false,
     },
     work_type: {

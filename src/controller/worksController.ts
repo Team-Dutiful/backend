@@ -4,9 +4,10 @@ const service = new WorksService();
 
 const createWork = async (req: Request, res: Response) => {
   try {
-    const { name, color, start_time, end_time, work_type, memo } = req.body;
-
+    const { user_id, name, color, start_time, end_time, work_type, memo } =
+      req.body;
     await service.createWork(
+      user_id,
       name,
       color,
       start_time,
@@ -32,8 +33,10 @@ const getWorks = async (req: Request, res: Response) => {
 
 const getWorksList = async (req: Request, res: Response) => {
   try {
-    await service.getWorkList();
-    return res.status(200).json({ status: 200, message: "OK", body: {} });
+    const workList = await service.getWorkList(req.user_id);
+    return res
+      .status(200)
+      .json({ status: 200, message: "OK", body: { workList } });
   } catch (e) {
     return res.status(400).json({ status: 400, message: e.message });
   }

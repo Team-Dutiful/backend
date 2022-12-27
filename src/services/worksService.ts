@@ -3,29 +3,24 @@ import { User } from "@db/models/user";
 
 class WorksService {
   createWork = async (
+    user_id: number,
     name: string,
     color: string,
-    start_time: Date,
-    end_time: Date,
+    start_time: string,
+    end_time: string,
     work_type: string,
     memo: string
   ) => {
     try {
-      const newUser = await User.create({
-        identification: "hello",
-        password: "1234",
-        name: "hi",
-        email: "tmax.com",
-      });
-      const newWork = await Work.create(
+      await Work.create(
         {
-          name: "name",
-          color: "#12345",
-          start_time: new Date(),
-          end_time: new Date(),
-          work_type: "DAY",
-          memo: "memo",
-          user_id: newUser.user_id,
+          name: name,
+          color: color,
+          start_time: start_time,
+          end_time: end_time,
+          work_type: work_type,
+          memo: memo,
+          user_id: user_id,
         },
         {
           include: [
@@ -49,8 +44,7 @@ class WorksService {
     }
   };
 
-  getWorkList = async () => {
-    const user_id = 2; // temp user_id
+  getWorkList = async (user_id: number) => {
     const workList = Work.findAll({ where: { user_id: user_id } });
     return workList;
   };
@@ -59,8 +53,8 @@ class WorksService {
     work_id: number,
     name: string,
     color: string,
-    start_time: Date,
-    end_time: Date,
+    start_time: string,
+    end_time: string,
     work_type: string,
     memo: string
   ) => {
@@ -82,6 +76,88 @@ class WorksService {
     try {
       const work = await Work.findOne({ where: { work_id: work_id } });
       work.destroy();
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  createDefaultWork = async (user_id: number) => {
+    try {
+      await Work.create(
+        {
+          name: "DAY",
+          color: "#FFD9D9",
+          start_time: "09:00",
+          end_time: "18:00",
+          work_type: "DAY",
+          memo: "",
+          user_id: user_id,
+        },
+        {
+          include: [
+            {
+              model: User,
+            },
+          ],
+        }
+      );
+
+      await Work.create(
+        {
+          name: "NIGHT",
+          color: "#D4FFB2",
+          start_time: "09:00",
+          end_time: "18:00",
+          work_type: "NIGHT",
+          memo: "",
+          user_id: user_id,
+        },
+        {
+          include: [
+            {
+              model: User,
+            },
+          ],
+        }
+      );
+
+      await Work.create(
+        {
+          name: "EVENING",
+          color: "#FFEEC4",
+          start_time: "09:00",
+          end_time: "18:00",
+          work_type: "EVENING",
+          memo: "",
+          user_id: user_id,
+        },
+        {
+          include: [
+            {
+              model: User,
+            },
+          ],
+        }
+      );
+
+      await Work.create(
+        {
+          name: "OFF",
+          color: "#BBE7FF",
+          start_time: "09:00",
+          end_time: "18:00",
+          work_type: "OFF",
+          memo: "",
+          user_id: user_id,
+        },
+        {
+          include: [
+            {
+              model: User,
+            },
+          ],
+        }
+      );
     } catch (error) {
       throw error;
     }

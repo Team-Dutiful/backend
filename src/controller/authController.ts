@@ -2,9 +2,11 @@ import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import * as authService from "@services/authService";
+import WorksService from "@services/worksService";
 import { UserAttributes } from "@db/models/user";
 import { config } from "config";
 import axios from "axios";
+const service = new WorksService();
 
 const signup = async (req: Request<{}, {}, UserAttributes>, res: Response) => {
   const { identification, password, name, email } = req.body;
@@ -20,12 +22,14 @@ const signup = async (req: Request<{}, {}, UserAttributes>, res: Response) => {
   const hashed = await bcrypt.hash(password, config.bcrypt.saltRounds);
 
   try {
-    await authService.createUser({
+    const user = await authService.createUser({
       identification,
       password: hashed,
       name,
       email,
     });
+
+    await service.createDefaultWork(user.user_id);
 
     res.status(200).json({
       status: "200",
@@ -37,6 +41,7 @@ const signup = async (req: Request<{}, {}, UserAttributes>, res: Response) => {
       },
     });
   } catch (e) {
+    console.log(e.message);
     return res.status(400).json({ status: 400, message: e.message });
   }
 };

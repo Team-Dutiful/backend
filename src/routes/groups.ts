@@ -14,5 +14,6 @@ router.post("/:groupId/exit", isAuth, controller.exitGroup);
 router.put("/:groupId/change-leader", isAuth, controller.changeLeader);
 router.get("/:groupId/members", isAuth, controller.getGroupMembers);
 router.get("/:groupId/schedule", isAuth, controller.getScheduleByMembers);
+router.post("/:groupId/invite", isAuth, controller.inviteMember);
 
 export default router;
