@@ -12,8 +12,13 @@ const manageSchedule = async (req: Request, res: Response) => {
 
 const getSchedule = async (req: Request, res: Response) => {
   try {
-    await ScheduleService.getSchedule(req.body.year, req.body.month);
-    return res.status(200).json({ status: 200 });
+    const { year, month } = req.body;
+    const schedule = await ScheduleService.getSchedule(
+      req.user_id,
+      year,
+      month
+    );
+    return res.status(200).json({ status: 200, body: schedule });
   } catch (e) {
     return res.status(400).json({ status: 400, message: e.message });
   }

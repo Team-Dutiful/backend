@@ -37,9 +37,9 @@ interface IWork {
 
 interface ICalendarDate {
   calendar_date_id: number;
-  year: number;
-  month: number;
-  day: number;
+  year: string;
+  month: string;
+  day: string;
   work: IWork;
 }
 

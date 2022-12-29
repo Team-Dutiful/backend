@@ -26,4 +26,13 @@ export const config = {
     email: process.env.EMAIL,
     password: process.env.PASSWORD,
   },
+  kakao: {
+    apiKey: process.env.KAKAO_REST_API_KEY,
+    redirectURI: process.env.KAKAO_REDIRECT_URI,
+  },
+
+  naver: {
+    clientID: process.env.NAVER_CLIENT_ID,
+    clientSecret: process.env.NAVER_CLIENT_SECRET,
+  },
 };

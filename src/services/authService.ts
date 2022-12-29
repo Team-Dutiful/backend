@@ -23,6 +23,17 @@ export async function createUser(user: UserAttributes) {
   return User.create(user);
 }
 
+export async function changeUserName(user_id: number, newUserName: string) {
+  return User.update(
+    { name: newUserName },
+    {
+      where: {
+        user_id,
+      },
+    }
+  );
+}
+
 export async function changeUserPassword(user_id: number, newPassword: string) {
   return User.update(
     { password: newPassword },

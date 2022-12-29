@@ -7,18 +7,18 @@ interface CalendarAttributes {
   calendar_date_id: number;
   user_id: number;
   work_id: number;
-  year: number;
-  month: number;
-  day: number;
+  year: string;
+  month: string;
+  day: string;
 }
 
 export class CalendarDate extends Model<CalendarAttributes> {
   public calendar_date_id!: number;
   public user_id: number;
   public work_id: number;
-  public year!: number;
-  public month!: number;
-  public day!: number;
+  public year!: string;
+  public month!: string;
+  public day!: string;
 }
 
 CalendarDate.init(
@@ -38,15 +38,15 @@ CalendarDate.init(
       allowNull: false,
     },
     year: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING(4),
       allowNull: false,
     },
     month: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING(2),
       allowNull: false,
     },
     day: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING(2),
       allowNull: false,
     },
   },

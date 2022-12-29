@@ -31,6 +31,10 @@ router.post("/signup", validateSignup, controller.signup);
 
 router.post("/login", validateLogin, controller.login);
 
+router.get("/login-kakao", controller.loginKakao);
+
+router.get("/login-naver", controller.loginNaver);
+
 router.post("/logout", controller.logout);
 
 router.post("/find-id", validateFindID, controller.findid);
@@ -63,5 +67,7 @@ router.post(
   isAuth,
   controller.changepwd
 );
+
+router.post("/change-name", isAuth, controller.changeName);
 
 export default router;
