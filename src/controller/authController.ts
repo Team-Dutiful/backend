@@ -293,6 +293,21 @@ const findid = async (req: Request, res: Response) => {
   });
 };
 
+const changeName = async (req: Request, res: Response) => {
+  const { newUserName } = req.body;
+
+  try {
+    await authService.changeUserName(req.user_id, newUserName);
+    return res.status(200).json({
+      status: "200",
+      message: "OK",
+      body: {},
+    });
+  } catch (e) {
+    return res.status(400).json({ status: 400, message: e.message });
+  }
+};
+
 const changepwd = async (req: Request, res: Response) => {
   const { password } = req.body;
 
@@ -379,6 +394,7 @@ export default {
   logout,
   signup,
   findid,
+  changeName,
   changepwd,
   changepwdByEmail,
   sendCode,

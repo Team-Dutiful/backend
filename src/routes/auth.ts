@@ -68,4 +68,6 @@ router.post(
   controller.changepwd
 );
 
+router.post("/change-name", isAuth, controller.changeName);
+
 export default router;
