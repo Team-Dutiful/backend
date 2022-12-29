@@ -291,7 +291,11 @@ export async function getScheduleByMembers(groupId: number) {
 }
 
 // 멤버 초대하기
-export async function inviteMember(groupId: number, email: string) {
+export async function inviteMember(
+  userId: number,
+  groupId: number,
+  email: string
+) {
   const group = await Group.findOne({
     where: { group_id: groupId },
   });
@@ -302,6 +306,17 @@ export async function inviteMember(groupId: number, email: string) {
 
   if (findUser == null) {
     throw new Error("해당 이메일을 가진 유저가 존재하지 않습니다.");
+  }
+
+  const groupMember = await GroupMember.findOne({
+    where: {
+      group_id: group.group_id,
+      user_id: findUser.user_id,
+    },
+  });
+
+  if (groupMember != null) {
+    throw new Error("이미 가입된 유저입니다.");
   }
 
   await GroupMember.create({

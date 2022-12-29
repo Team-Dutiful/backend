@@ -96,7 +96,7 @@ const getGroupMembers = async (req: Request, res: Response) => {
 const getScheduleByMembers = async (req: Request, res: Response) => {
   try {
     const data = await groupService.getScheduleByMembers(+req.params.groupId);
-    return res.status(200).json({ status: 200, data: data });
+    return res.status(200).json({ status: 200, body: data });
   } catch (e) {
     return res.status(400).json({ status: 400, message: e.message });
   }
@@ -104,8 +104,12 @@ const getScheduleByMembers = async (req: Request, res: Response) => {
 
 const inviteMember = async (req: Request, res: Response) => {
   try {
-    await groupService.inviteMember(+req.params.groupId, req.body.email);
-    return res.status(200);
+    await groupService.inviteMember(
+      req.user_id,
+      +req.params.groupId,
+      req.body.email
+    );
+    return res.status(200).json({ status: 200 });
   } catch (e) {
     return res.status(400).json({ status: 400, message: e.message });
   }
