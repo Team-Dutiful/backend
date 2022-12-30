@@ -70,4 +70,6 @@ router.post(
 
 router.post("/change-name", isAuth, controller.changeName);
 
+router.post("/change-email", isAuth, controller.changeEmail);
+
 export default router;

@@ -34,6 +34,17 @@ export async function changeUserName(user_id: number, newUserName: string) {
   );
 }
 
+export async function changeUserEmail(user_id: number, newUserEmail: string) {
+  return User.update(
+    { email: newUserEmail },
+    {
+      where: {
+        user_id,
+      },
+    }
+  );
+}
+
 export async function changeUserPassword(user_id: number, newPassword: string) {
   return User.update(
     { password: newPassword },
