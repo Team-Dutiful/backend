@@ -323,12 +323,18 @@ const changeEmail = async (req: Request, res: Response) => {
   }
 };
 
-const changepwd = async (req: Request, res: Response) => {
-  const { password } = req.body;
+const changepwdByPwd = async (req: Request, res: Response) => {
+  const { identification, curPwd, newPwd } = req.body;
+  const user = await authService.findByUserIdentification(identification);
+  const isValidPassword = await bcrypt.compare(curPwd, user.password);
 
-  // 입력 받은 패스워드를 암호화
-  // saltRounds를 이용하여 암호화를 더 복잡하게 한다.
-  const hashed = await bcrypt.hash(password, config.bcrypt.saltRounds);
+  if (!isValidPassword) {
+    return res
+      .status(401)
+      .json({ message: "현재 비밀번호가 일치하지 않습니다." });
+  }
+
+  const hashed = await bcrypt.hash(newPwd, config.bcrypt.saltRounds);
   try {
     await authService.changeUserPassword(req.user_id, hashed);
     return res.status(200).json({
@@ -411,7 +417,7 @@ export default {
   findid,
   changeName,
   changeEmail,
-  changepwd,
+  changepwdByPwd,
   changepwdByEmail,
   sendCode,
   sendCodeAtFindPassword,

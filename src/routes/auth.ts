@@ -56,16 +56,16 @@ router.post(
 );
 
 router.post(
-  "/change-pwd",
+  "/change-pwd-from-pwd",
+  isAuth,
   [
-    body("password")
+    body("curPwd")
       .trim()
       .isLength({ min: 5 })
       .withMessage("패스워드는 5자 이상"),
     validate,
   ],
-  isAuth,
-  controller.changepwd
+  controller.changepwdByPwd
 );
 
 router.post("/change-name", isAuth, controller.changeName);
