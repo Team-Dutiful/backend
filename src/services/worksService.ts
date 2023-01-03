@@ -37,7 +37,16 @@ class WorksService {
 
   getWork = async (work_id: number) => {
     try {
-      const work = Work.findOne({ where: { work_id: work_id } });
+      const findWork = await Work.findOne({ where: { work_id: work_id } });
+      const work = {
+        work_id: findWork.work_id,
+        work_type: findWork.work_type,
+        name: findWork.name,
+        color: findWork.color,
+        start_time: findWork.start_time,
+        end_time: findWork.end_time,
+        memo: findWork.memo,
+      };
       return work;
     } catch (error) {
       throw error;
@@ -86,9 +95,9 @@ class WorksService {
       await Work.create(
         {
           name: "DAY",
-          color: "#FFD9D9",
-          start_time: "09:00",
-          end_time: "18:00",
+          color: "#FF9F9F",
+          start_time: "07:00",
+          end_time: "15:00",
           work_type: "DAY",
           memo: "",
           user_id: user_id,
@@ -104,10 +113,29 @@ class WorksService {
 
       await Work.create(
         {
+          name: "EVE",
+          color: "#FFDF8D",
+          start_time: "15:00",
+          end_time: "23:00",
+          work_type: "EVE",
+          memo: "",
+          user_id: user_id,
+        },
+        {
+          include: [
+            {
+              model: User,
+            },
+          ],
+        }
+      );
+
+      await Work.create(
+        {
           name: "NIGHT",
-          color: "#D4FFB2",
-          start_time: "09:00",
-          end_time: "18:00",
+          color: "#63E2BC",
+          start_time: "23:00",
+          end_time: "07:00",
           work_type: "NIGHT",
           memo: "",
           user_id: user_id,
@@ -123,29 +151,10 @@ class WorksService {
 
       await Work.create(
         {
-          name: "EVENING",
-          color: "#FFEEC4",
-          start_time: "09:00",
-          end_time: "18:00",
-          work_type: "EVENING",
-          memo: "",
-          user_id: user_id,
-        },
-        {
-          include: [
-            {
-              model: User,
-            },
-          ],
-        }
-      );
-
-      await Work.create(
-        {
           name: "OFF",
-          color: "#BBE7FF",
-          start_time: "09:00",
-          end_time: "18:00",
+          color: "#9BC9FF",
+          start_time: "24:00",
+          end_time: "24:00",
           work_type: "OFF",
           memo: "",
           user_id: user_id,

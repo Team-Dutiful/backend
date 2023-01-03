@@ -21,11 +21,11 @@ const createWork = async (req: Request, res: Response) => {
   }
 };
 
-const getWorks = async (req: Request, res: Response) => {
+const getWork = async (req: Request, res: Response) => {
   try {
     const work_id = Number(req.params.workId);
-    await service.getWork(work_id);
-    return res.status(200).json({ status: 200, message: "OK", body: {} });
+    const work = await service.getWork(work_id);
+    return res.status(200).json({ status: 200, message: "OK", body: { work } });
   } catch (e) {
     return res.status(400).json({ status: 400, message: e.message });
   }
@@ -42,7 +42,7 @@ const getWorksList = async (req: Request, res: Response) => {
   }
 };
 
-const updateWorks = async (req: Request, res: Response) => {
+const updateWork = async (req: Request, res: Response) => {
   try {
     const work_id = Number(req.params.workId);
     const { name, color, start_time, end_time, work_type, memo } = req.body;
@@ -72,4 +72,4 @@ const deleteWorks = async (req: Request, res: Response) => {
   }
 };
 
-export default { createWork, getWorks, getWorksList, updateWorks, deleteWorks };
+export default { createWork, getWork, getWorksList, updateWork, deleteWorks };
